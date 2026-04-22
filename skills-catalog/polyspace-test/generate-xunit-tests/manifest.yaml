@@ -1,0 +1,13 @@
+# manifest.yaml — Tooling metadata for generate-xunit-tests
+schema_version: 1
+license: MathWorks BSD-3-Clause
+scope: product
+version: "1.0"
+requires-tools: []
+requires-skills: []
+reference-files:
+  - reference/xunit_api_c.md
+  - reference/xunit_api_cpp.md
+requires-products:
+  - "Polyspace as You Code"
+toolkit: polyspace-agentic-toolkit

@@ -1,0 +1,11 @@
+# manifest.yaml — Tooling metadata for configure-build-options
+schema_version: 1
+license: MathWorks BSD-3-Clause
+scope: product
+version: "1.0"
+requires-tools:
+  - configure_build_options_for_polyspace
+requires-skills: []
+requires-products:
+  - "Polyspace as You Code"
+toolkit: polyspace-agentic-toolkit

@@ -1,0 +1,11 @@
+# manifest.yaml — Tooling metadata for query-justification-catalog
+schema_version: 1
+license: MathWorks BSD-3-Clause
+scope: product
+version: "1.0"
+requires-tools:
+  - query_justification_catalog
+requires-skills: []
+requires-products:
+  - "Polyspace as You Code"
+toolkit: polyspace-agentic-toolkit
