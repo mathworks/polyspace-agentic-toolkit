@@ -22,6 +22,7 @@ Rule and checker pages are under `https://www.mathworks.com/help/bugfinder/ref/`
 | MISRA C++ 2023 | misra-cpp-2023-rules-and-directives.html | misracpp2023rule{N}.html or misracpp2023d{N}.html | Rule 0.0.1 -> misracpp2023rule0.0.1.html |
 | AUTOSAR C++14 | autosar-cpp-14.html | autosarc14rule{letter}{N with dashes removed}.html | A0-1-1 -> autosarc14rulea011.html |
 | CERT C | cert-c-rules-and-recommendations.html | certcrule{id lowered with dashes removed}.html | ARR30-C -> certcrulearr30c.html |
+| CERT C++ | cert-c-rules.html | certc{id lowered with dashes and -CPP suffix removed}cpp.html | EXP52-CPP -> certcexp52cpp.html |
 | ISO/IEC TS 17961 | isoiec-ts-17961-rules.html | isoiects17961{id lowered}.html | accfree -> isoiects17961accfree.html |
 | CWE | cwe-common-weakness-enumeration-rules.html | cwe{N}.html | CWE-119 -> cwe119.html |
 | Defects | defect-reference.html | No predictable pattern | Use web search instead |
