@@ -1,6 +1,6 @@
-# Polyspace MCP Server
+# Polyspace&reg; Agentic Toolkit
 
-Run Polyspace(R) as You Code static code analysis on your C/C++ code using AI applications with the official Polyspace MCP Server from MathWorks(R).
+Run Polyspace&reg; as You Code&trade; static code analysis on your C/C++ code using AI applications with the official Polyspace Agentic Toolkit from MathWorks&reg;.
 
 With the Polyspace MCP Server and its companion skills, you can ask your AI assistant to:
 
@@ -13,7 +13,7 @@ With the Polyspace MCP Server and its companion skills, you can ask your AI assi
 - **"Configure build options for my project"** — generate a build options file from a build command or `compile_commands.json`.
 - **"What does the `-target` option do?"** — look up documentation for any Polyspace option, checker, or coding rule.
 
-**Polyspace Test** — unit test generation:
+**Polyspace Test&trade;** — unit test generation:
 - **"Generate unit tests for this function"** — write tests using the Polyspace XUnit framework (PSTUnit).
 
 ## How It Works
@@ -49,18 +49,21 @@ The AI assistant reads **skills** (instructional markdown files) for domain know
 
 | Agent | Linux | macOS | Windows | Setup |
 |-------|-------|-------|---------|-------|
-| Claude Code | Yes | Yes | Yes | Automated |
-| GitHub Copilot | Yes | Yes | Yes | Automated |
-| OpenAI Codex | Yes | Yes | Yes | Automated |
-| Gemini CLI | Yes | Yes | Yes | Automated |
-| Sourcegraph Amp | Yes | Yes | Yes | Automated |
-| Cursor | Yes | Yes | Yes | Automated |
+| [Claude Code](https://claude.ai/code) | Yes | Yes | Yes | Automated |
+| [GitHub&reg; Copilot](https://github.com/features/copilot) | Yes | Yes | Yes | Automated |
+| [OpenAI&reg; Codex](https://openai.com/codex) | Yes | Yes | Yes | Automated |
+| [Gemini&trade; CLI](https://github.com/google-gemini/gemini-cli) | Yes | Yes | Yes | Automated |
+| [Sourcegraph Amp](https://ampcode.com/) | Yes | Yes | Yes | Automated |
+| [Cursor](https://www.cursor.com/) | Yes | Yes | Yes | Automated |
 
 Polyspace as You Code R2026a recommended. Previous versions back to R2024b are supported.
 
 ## Quick Start
 
-**Prerequisites**: [Polyspace as You Code](https://www.mathworks.com/products/polyspace.html) R2024b+, a supported AI agent, Git.
+**Prerequisites:**
+* [Polyspace as You Code](https://www.mathworks.com/products/polyspace.html) R2024b+
+* Supported AI coding agent
+* Git&trade;
 
 ### Full Setup (recommended)
 
@@ -82,6 +85,13 @@ The agent reads the setup skill, detects your platform, downloads the MCP server
 ### Already Have the MCP Server Binary?
 
 If you installed the binary manually, you just need skills. Clone this repo and ask your agent: "Set up the Polyspace Agentic Toolkit" — it will skip the download and configure skills only.
+
+### Verify
+Ask your agent:
+
+```
+Run Polyspace on a sample file and show me the results.
+```
 
 ## MCP Tools
 
@@ -210,6 +220,18 @@ polyspace-agentic-toolkit/
 ## Data Collection
 
 The Polyspace MCP Server may collect fully anonymized information about your usage of the server and send it to MathWorks. This data collection helps MathWorks improve products and is on by default. To opt out of data collection, set the argument `--disable-telemetry` to `true`.
+
+## Trademarks
+Polyspace is a registered trademark of The MathWorks, Inc. See [mathworks.com/trademarks](https://www.mathworks.com/trademarks) for a list of additional trademarks. Other product or brand names may be trademarks or registered trademarks of their respective holders.
+
+## Contributing
+We welcome feedback through [GitHub Issues](https://github.com/polyspace/polyspace-agentic-toolkit/issues). Pull requests are reviewed for ideas and feedback but are not merged from external contributors. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+## Licensing and Usage
+The Polyspace Agentic Toolkit is licensed with [MathWorks BSD-3 Clause](LICENSE). It is solely for use in conjunction with MathWorks products and service offerings.
+
+## Contact Support
+MathWorks encourages you to use this repository and provide feedback. To request technical support or submit an enhancement request, [create a GitHub issue](https://github.com/polyspace/polyspace-agentic-toolkit/issues) or email [genai-support@mathworks.com](mailto:genai-support@mathworks.com). For Polyspace as You Code issues and support, see the [Polyspace as You Code documentation](https://www.mathworks.com/help/payc).
 
 #
 
