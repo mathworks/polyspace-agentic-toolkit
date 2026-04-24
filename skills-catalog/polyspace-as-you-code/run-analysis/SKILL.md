@@ -15,10 +15,10 @@ Before running, gather build configuration:
 
 1. Look for existing Polyspace IDE config in `.vscode/settings.json` (`polyspace.analysisOptions.*`), `.project`, or `.vs/`. If found, use it to populate the build options, checkers, and options file paths.
 2. Otherwise, ask the user for pre-created config files or a team script that launches Polyspace.
-3. Otherwise, search for `compile_commands.json` or a `Makefile`/`CMakeLists.txt` and create a build options file (read `configure-build-options/SKILL.md` in the parent folder).
+3. Otherwise, search for `compile_commands.json` or a `Makefile`/`CMakeLists.txt` and create a build options file (invoke the `configure-build-options` skill).
 4. For simple standalone files, build options may not be needed.
 
-If no checkers file exists, read `configure-checkers/SKILL.md` in the parent folder to create one.
+If no checkers file exists, invoke the `configure-checkers` skill to create one.
 
 ## Running the analysis
 
@@ -44,4 +44,7 @@ If compilation fails, check `<output_dir>/polyspace_err.log` for compiler error 
 
 ## After analysis
 
-If findings are reported, read `fix-findings/SKILL.md` and `justify-findings/SKILL.md` in the parent folder for the fix/justify workflows.
+If the user asked to fix findings or make the code compliant (not just run analysis), and findings are reported:
+
+- **If skills are available**, invoke the `fix-findings` skill. Do NOT skip the skill and call MCP tools directly — the skill defines the full fix/justify workflow.
+- **If skills are not available**, read `fix-findings/SKILL.md` and `justify-findings/SKILL.md` in this skill's parent folder for the fix/justify workflows.

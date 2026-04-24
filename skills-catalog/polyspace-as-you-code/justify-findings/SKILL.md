@@ -87,7 +87,7 @@ If the project has a justification catalog JSON file:
 
 **If the Polyspace MCP Server is available**, use the `query_justification_catalog` tool with the `findings` and `catalog_file_path` arguments to get pre-approved justification texts.
 
-**Otherwise**, read `query-justification-catalog/SKILL.md` in the parent folder for the catalog JSON schema and how to read it directly.
+**Otherwise**, invoke the `query-justification-catalog` skill, or if skills are not available, read `query-justification-catalog/SKILL.md` in this skill's parent folder for the catalog JSON schema and how to query it directly.
 
 If no catalog file is provided and the project has IDE markers (`.vscode/`, `.project`, `.vs/`), the user may have a justification catalog configured in the IDE extension settings — ask them.
 
