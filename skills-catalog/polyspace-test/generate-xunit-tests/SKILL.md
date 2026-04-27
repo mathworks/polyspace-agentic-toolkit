@@ -52,7 +52,15 @@ g++ <test_file> <polyspace_root>/polyspace/pstest/pstunit/src/pstest.c \
     -I<polyspace_root>/polyspace/pstest/pstunit/include -o test_executable
 ```
 
-Replace `<polyspace_root>` with the Polyspace installation path.
+## How to find `<polyspace_root>`
+
+`<polyspace_root>` is the Polyspace installation root — the directory that contains the `polyspace/` folder.
+
+1. Check the `$POLYSPACE_ROOT` environment variable: `echo $POLYSPACE_ROOT`
+2. If not set, derive it from a Polyspace binary in PATH: `POLYSPACE_ROOT=$(cd "$(dirname "$(which polyspace-as-you-code)")/../.." && pwd)`
+3. If neither works, ask the user for the Polyspace installation path.
+
+Do NOT use `find /` or broad filesystem searches — they will hang on network or snapshot filesystems.
 
 ## 5. Run the test
 

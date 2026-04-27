@@ -19,6 +19,8 @@ Create a Polyspace build options file from either a build command (sniffing) or 
 
 Exactly one of `build_command` or `ccdb_file_path` must be provided.
 
+**macOS**: Build command sniffing (`build_command`) is not supported on macOS because System Integrity Protection (SIP) blocks `polyspace-configure` from tracing processes. Use `ccdb_file_path` with a `compile_commands.json` instead.
+
 ## Otherwise using the binary directly
 
 **If the Polyspace MCP Server is NOT available**, read `cli-usage.md` in this folder for direct command-line usage with `polyspace-configure`.

@@ -13,7 +13,11 @@ Find the documentation page for a Polyspace analysis option (e.g., `-target`, `-
 
 ## Step 1: Get the option description and accepted values
 
-Run the binary to list all available options:
+**If the Polyspace MCP Server is available**, use the `get_polyspace_documentation` tool:
+- `list_payc_options` = true for analysis options (`polyspace-as-you-code`)
+- `list_configure_options` = true for build configuration options (`polyspace-configure`)
+
+**If the Polyspace MCP Server is NOT available**, run the binary directly:
 
 ```
 polyspace-as-you-code -help
@@ -24,6 +28,16 @@ Or for polyspace-configure options:
 ```
 polyspace-configure -help
 ```
+
+### How to find the binaries
+
+Polyspace binaries are in `<polyspace_root>/polyspace/bin/`. To find `<polyspace_root>`:
+
+1. Check the `$POLYSPACE_ROOT` environment variable: `echo $POLYSPACE_ROOT`
+2. If not set, check whether the binary is already in PATH: `which polyspace-as-you-code`
+3. If neither works, ask the user for the Polyspace installation path.
+
+If the binary is not in PATH, use the full path: `$POLYSPACE_ROOT/polyspace/bin/polyspace-as-you-code`.
 
 Find the option in the output — it shows the accepted values and the category it belongs to.
 
@@ -37,7 +51,7 @@ From the `-help` output, note the **category heading** the option appears under 
 | Checkers Behavior | https://www.mathworks.com/help/bugfinder/configure-coding-rule-checks-and-code-metrics.html |
 | Check Behavior | https://www.mathworks.com/help/bugfinder/modify-analysis-assumption.html |
 | Target & Compiler | https://www.mathworks.com/help/bugfinder/mimic-build.html |
-| Input & Stubbing | https://www.mathworks.com/help/bugfinder/mimic-build.html |
+| Input & Stubbing | https://www.mathworks.com/help/bugfinder/specify-code-behavior.html |
 | Multitasking | https://www.mathworks.com/help/bugfinder/improve-precision.html |
 | Post Verification | https://www.mathworks.com/help/bugfinder/reporting.html |
 | General Options | https://www.mathworks.com/help/bugfinder/configur-review-import.html |

@@ -5,6 +5,18 @@
 | Linux / macOS | `polyspace-as-you-code` (R2026a+) or `polyspace-bug-finder-access` (older) |
 | Windows       | `polyspace-as-you-code.exe` (R2026a+) or `polyspace-bug-finder-access.exe` (older) |
 
+## How to find the binaries
+
+Polyspace binaries are in `<polyspace_root>/polyspace/bin/`. To find `<polyspace_root>`:
+
+1. Check the `$POLYSPACE_ROOT` environment variable: `echo $POLYSPACE_ROOT`
+2. If not set, check whether the binary is already in PATH: `which polyspace-as-you-code`
+3. If neither works, ask the user for the Polyspace installation path.
+
+If the binary is not in PATH, use the full path: `$POLYSPACE_ROOT/polyspace/bin/polyspace-as-you-code`.
+
+## Usage
+
 ```
 polyspace-as-you-code -sources <file> \
     [-checkers-activation-file <checkers.xml>] \
