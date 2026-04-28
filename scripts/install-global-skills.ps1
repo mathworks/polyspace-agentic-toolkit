@@ -23,23 +23,37 @@ try {
 
 Write-Host "Installing Polyspace skills to $SkillsDir"
 
-# Create symlinks/junctions for each skill group
+# Create flat per-skill symlinks so that each SKILL.md is at depth */SKILL.md
+# (Gemini CLI discovers skills with a one-level-deep glob only).
 foreach ($GroupDir in Get-ChildItem -Path $SkillsCatalog -Directory) {
-    $GroupName = $GroupDir.Name
-    $LinkName = "polyspace-$GroupName"
-    $LinkPath = Join-Path $SkillsDir $LinkName
-
-    if (Test-Path $LinkPath) {
-        Remove-Item $LinkPath -Force -Recurse
+    # If the group itself has a SKILL.md, link it directly
+    $DirectSkill = Join-Path $GroupDir.FullName "SKILL.md"
+    if (Test-Path $DirectSkill) {
+        $LinkName = $GroupDir.Name
+        $LinkPath = Join-Path $SkillsDir $LinkName
+        if (Test-Path $LinkPath) { Remove-Item $LinkPath -Force -Recurse }
+        try {
+            New-Item -ItemType SymbolicLink -Path $LinkPath -Target $GroupDir.FullName | Out-Null
+        } catch {
+            cmd /c mklink /J "$LinkPath" "$($GroupDir.FullName)" | Out-Null
+        }
+        Write-Host "  Linked: $LinkName -> $($GroupDir.FullName)"
     }
 
-    try {
-        New-Item -ItemType SymbolicLink -Path $LinkPath -Target $GroupDir.FullName | Out-Null
-    } catch {
-        # Fall back to junction if symlink requires admin
-        cmd /c mklink /J "$LinkPath" "$($GroupDir.FullName)" | Out-Null
+    # Link each sub-skill individually
+    foreach ($SkillDir in Get-ChildItem -Path $GroupDir.FullName -Directory) {
+        $SkillFile = Join-Path $SkillDir.FullName "SKILL.md"
+        if (-not (Test-Path $SkillFile)) { continue }
+        $LinkName = $SkillDir.Name
+        $LinkPath = Join-Path $SkillsDir $LinkName
+        if (Test-Path $LinkPath) { Remove-Item $LinkPath -Force -Recurse }
+        try {
+            New-Item -ItemType SymbolicLink -Path $LinkPath -Target $SkillDir.FullName | Out-Null
+        } catch {
+            cmd /c mklink /J "$LinkPath" "$($SkillDir.FullName)" | Out-Null
+        }
+        Write-Host "  Linked: $LinkName -> $($SkillDir.FullName)"
     }
-    Write-Host "  Linked: $LinkName -> $($GroupDir.FullName)"
 }
 
 Write-Host "Done. Skills installed to $SkillsDir"

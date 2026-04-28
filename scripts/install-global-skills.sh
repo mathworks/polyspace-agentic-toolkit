@@ -23,18 +23,30 @@ fi
 
 echo "Installing Polyspace skills to $SKILLS_DIR"
 
-# Create symlinks for each skill group
+# Create flat per-skill symlinks so that each SKILL.md is at depth */SKILL.md
+# (Gemini CLI discovers skills with a one-level-deep glob only).
 for group_dir in "$SKILLS_CATALOG"/*/; do
-    group_name=$(basename "$group_dir")
-    link_name="polyspace-$group_name"
-    link_path="$SKILLS_DIR/$link_name"
+    [ -d "$group_dir" ] || continue
 
-    if [ -L "$link_path" ]; then
-        rm "$link_path"
+    # If the group itself has a SKILL.md, link it directly
+    if [ -f "$group_dir/SKILL.md" ]; then
+        link_name=$(basename "$group_dir")
+        link_path="$SKILLS_DIR/$link_name"
+        [ -L "$link_path" ] && rm "$link_path"
+        ln -s "$group_dir" "$link_path"
+        echo "  Linked: $link_name -> $group_dir"
     fi
 
-    ln -s "$group_dir" "$link_path"
-    echo "  Linked: $link_name -> $group_dir"
+    # Link each sub-skill individually
+    for skill_dir in "$group_dir"/*/; do
+        [ -d "$skill_dir" ] || continue
+        [ -f "$skill_dir/SKILL.md" ] || continue
+        link_name=$(basename "$skill_dir")
+        link_path="$SKILLS_DIR/$link_name"
+        [ -L "$link_path" ] && rm "$link_path"
+        ln -s "$skill_dir" "$link_path"
+        echo "  Linked: $link_name -> $skill_dir"
+    done
 done
 
 echo "Done. Skills installed to $SKILLS_DIR"
