@@ -2,31 +2,29 @@
 
 Run Polyspace&reg; as You Code&trade; static code analysis on your C/C++ code using AI applications with the official Polyspace Agentic Toolkit from MathWorks&reg;.
 
-With the Polyspace MCP Server and its companion skills, you can ask your AI assistant to:
+## What It Does
+The Polyspace Agentic Toolkit gives your agent the knowledge and context to work with Polyspace efficiently. With the Polyspace MCP Server and its companion skills, you can ask your AI assistant to perform Polyspace as You Code and Polyspace Test workflows. For example:
 
-**Polyspace as You Code** — static analysis for C/C++ code:
-- **"Make this file compliant with MISRA C:2012"** — run analysis, fix violations, and re-run until the file is clean.
-- **"Check that my changes are compliant"** — analyze a modified file and address any new findings.
-- **"Fix these findings"** — understand each finding, apply a code fix, and re-run analysis to confirm.
-- **"Justify this finding"** — insert a correctly formatted Polyspace annotation comment, optionally using pre-approved texts from a team justification catalog.
-- **"Set up MISRA C:2012 checking"** — create or modify the checkers XML file to enable specific coding standards.
-- **"Configure build options for my project"** — generate a build options file from a build command or `compile_commands.json`.
-- **"What does the `-target` option do?"** — look up documentation for any Polyspace option, checker, or coding rule.
-
-**Polyspace Test&trade;** — unit test generation:
-- **"Generate unit tests for this function"** — write tests using the Polyspace XUnit framework (PSTUnit).
+- **"Make this file compliant with `<coding standard>`"** — Run a Polyspace as You Code analysis, fix violations, and re-run analysis until the file is clean.
+- **"Check that my changes are compliant"** — Analyze a modified file and address any new findings.
+- **"Fix these findings"** — Understand each finding, apply a code fix, and re-run analysis to confirm.
+- **"Justify this finding"** — Insert a correctly formatted Polyspace annotation comment, optionally using pre-approved texts from a team justification catalog.
+- **"Set up `<coding standard>` checking"** — Create or modify the checkers XML file to enable specific coding standards.
+- **"Configure build options for my project"** — Generate a build options file from a build command or `compile_commands.json`.
+- **"What does the `-target` option do?"** — Look up documentation for any Polyspace option, checker, or coding rule.
+- **"Generate unit tests for this function"** — Write tests using the Polyspace XUnit framework (PSTUnit).
 
 ## How It Works
 
 ```
                         +-------------------+
-                        |    AI Assistant    |
+                        |    AI Assistant   |
                         |  (Claude, Copilot,|
                         |   Amp, Cursor...) |
                         +--------+----------+
                                  |
-                    reads skills  |  calls tools
-                    (markdown)    |  (MCP protocol)
+                    reads skills |  calls tools
+                    (markdown)   |  (MCP protocol)
                                  |
           +----------------------+----------------------+
           |                                             |
@@ -43,40 +41,55 @@ With the Polyspace MCP Server and its companion skills, you can ask your AI assi
                                              +------------------+
 ```
 
-The AI assistant reads **skills** (instructional markdown files) for domain knowledge and calls **MCP tools** for execution. Skills work with or without the MCP server — each skill includes both the MCP tool path and a direct binary fallback.
+The AI assistant reads **skills** (instructional markdown files) for domain knowledge and calls **MCP tools** for execution. Skills work with or without the MCP server. Each skill includes both the MCP tool path and a direct binary fallback.
 
 ## Supported Platforms
 
-| Agent | Linux | macOS | Windows | Setup |
-|-------|-------|-------|---------|-------|
-| [Claude Code](https://claude.ai/code) | Yes | Yes | Yes | Automated |
-| [GitHub&reg; Copilot](https://github.com/features/copilot) | Yes | Yes | Yes | Automated |
-| [OpenAI&reg; Codex](https://openai.com/codex) | Yes | Yes | Yes | Automated |
-| [Gemini&trade; CLI](https://github.com/google-gemini/gemini-cli) | Yes | Yes | Yes | Automated |
-| [Sourcegraph Amp](https://ampcode.com/) | Yes | Yes | Yes | Automated |
-| [Cursor](https://www.cursor.com/) | Yes | Yes | Yes | Automated |
+| Agent | Setup |
+|-------|-------|
+| [Claude Code](https://claude.ai/code) | Automated |
+| [GitHub&reg; Copilot](https://github.com/features/copilot) | Automated |
+| [OpenAI&reg; Codex](https://openai.com/codex) | Automated |
+| [Gemini&trade; CLI](https://github.com/google-gemini/gemini-cli) | Automated |
+| [Sourcegraph Amp](https://ampcode.com/) | Automated |
+| [Cursor](https://www.cursor.com/) | Automated |
 
 Polyspace as You Code R2026a recommended. Previous versions back to R2024b are supported.
+
+The Polyspace Agentic Toolkit is supported on Linux, macOS, and Windows operating systems.
 
 ## Quick Start
 
 **Prerequisites:**
-* [Polyspace as You Code](https://www.mathworks.com/products/polyspace.html) R2024b+
+* [Polyspace as You Code](https://www.mathworks.com/products/polyspace.html) R2024b or later
 * Supported AI coding agent
 * Git&trade;
 
+The Polyspace Agentic Toolkit helps you install and configure the Polyspace MCP Core Server, or can be configured to use your existing installation.
+
 ### Full Setup (recommended)
+
+Clone the repository to a permanent location.
 
 ```
 git clone https://github.com/polyspace/polyspace-agentic-toolkit.git
 cd polyspace-agentic-toolkit
 ```
 
-Launch your AI agent and ask: **"Set up the Polyspace Agentic Toolkit"**
+Launch your agent from the toolkit directory, and ask it to set up the toolkit.
 
-The agent reads the setup skill, detects your platform, downloads the MCP server binary, registers it with your agent, and installs skills — all automatically.
+```
+Set up the Polyspace Agentic Toolkit
+```
 
-> **Claude Code — no clone required**: If you already have the MCP server binary, add skills directly:
+The agent: 
+* Reads the setup skill
+* Detects your platform
+* Locates your Polyspace installation
+* Downloads and registers the MCP server binary with your agent
+* Installs skills from the toolkit
+
+> **Claude Code — no clone required**: If you already have the MCP server binary configured, you can add the skills directly without cloning:
 > ```
 > claude plugin marketplace add "https://github.com/polyspace/polyspace-agentic-toolkit"
 > claude plugin install polyspace-as-you-code@polyspace-agentic-toolkit
@@ -84,7 +97,7 @@ The agent reads the setup skill, detects your platform, downloads the MCP server
 
 ### Already Have the MCP Server Binary?
 
-If you installed the binary manually, you just need skills. Clone this repo and ask your agent: "Set up the Polyspace Agentic Toolkit" — it will skip the download and configure skills only.
+If you installed the binary manually, you just need skills. Clone this repo and ask your agent: "Set up the Polyspace Agentic Toolkit" to skip the download and configure skills only.
 
 ### Verify
 Ask your agent:
@@ -93,9 +106,11 @@ Ask your agent:
 Run Polyspace on a sample file and show me the results.
 ```
 
+The agent searches the current directory for a C or C++ file to run an analysis on. If no file is found, the agent creates a sample file with some existing defects, runs an analysis on the file, and displays Polyspace results.
+
 ## MCP Tools
 
-The AI assistant automatically discovers tools via the MCP protocol:
+The Polyspace Agentic Toolkit provides the following tools:
 
 | Tool | Description |
 | --- | --- |
@@ -113,13 +128,13 @@ Skills are instructional markdown guides in [`skills-catalog/`](skills-catalog/)
 
 | Skill | Description |
 | --- | --- |
-| [run-analysis](skills-catalog/polyspace-as-you-code/run-analysis/) | Run analysis on a C/C++ source file |
+| [run-analysis](skills-catalog/polyspace-as-you-code/run-analysis/) | Run an analysis on a C/C++ source file |
 | [fix-findings](skills-catalog/polyspace-as-you-code/fix-findings/) | Understand, fix, or justify findings after analysis |
-| [justify-findings](skills-catalog/polyspace-as-you-code/justify-findings/) | Annotation syntax, format rules, and writing guidelines |
+| [justify-findings](skills-catalog/polyspace-as-you-code/justify-findings/) | Annotation syntax, formatting, and writing guidelines |
 | [query-justification-catalog](skills-catalog/polyspace-as-you-code/query-justification-catalog/) | Catalog JSON schema and matching rules |
 | [configure-build-options](skills-catalog/polyspace-as-you-code/configure-build-options/) | Create a build options file |
 | [configure-checkers](skills-catalog/polyspace-as-you-code/configure-checkers/) | Create or modify the checkers XML file |
-| [find-checker-documentation](skills-catalog/polyspace-as-you-code/find-checker-documentation/) | URL patterns for checker and coding rule documentation |
+| [find-checker-documentation](skills-catalog/polyspace-as-you-code/find-checker-documentation/) | Find documentation for defects and coding standards |
 | [find-option-documentation](skills-catalog/polyspace-as-you-code/find-option-documentation/) | Find documentation for Polyspace analysis options |
 | [documentation-entry-points](skills-catalog/polyspace-as-you-code/documentation-entry-points/) | Top-level Polyspace documentation URLs |
 
@@ -133,15 +148,15 @@ Skills are instructional markdown guides in [`skills-catalog/`](skills-catalog/)
 
 | Skill | Description |
 | --- | --- |
-| [polyspace-agentic-toolkit-setup](skills-catalog/polyspace-agentic-toolkit-setup/) | Automated setup for any supported AI agent |
+| [polyspace-agentic-toolkit-setup](skills-catalog/polyspace-agentic-toolkit-setup/) | Automated setup for supported AI agents |
 
 ## Team Configuration Files
 
-Several Polyspace MCP Server tools accept paths to configuration files that are typically shared across a team or organization. These files can live anywhere accessible to the AI assistant — checked into the repository alongside the source code, stored on a shared network drive, or maintained in a central location by your team.
+Several Polyspace MCP Server tools accept paths to configuration files that are typically shared across a team or organization. These files can live anywhere accessible to the AI assistant. For example, they can be checked into the repository alongside the source code, stored on a shared network drive, or maintained in a central location by your team.
 
 | File | Used by | Description |
 | --- | --- | --- |
-| Checkers XML | `run_polyspace_as_you_code`, `configure_checkers_for_polyspace` | Defines which coding standards and checkers are enabled. |
+| Checkers XML | `run_polyspace_as_you_code`, `configure_checkers_for_polyspace` | Defines which defects and coding standards are enabled during a Polyspace analysis. |
 | Build options file | `run_polyspace_as_you_code`, `configure_build_options_for_polyspace` | Specifies include paths, defines, and compiler settings. |
 | Options file | `run_polyspace_as_you_code` | Additional Polyspace as You Code analysis options. |
 | Justification catalog | `query_justification_catalog` | Pre-approved justification texts for known findings. |
@@ -175,47 +190,12 @@ Customize the behavior of the server by providing arguments in the `args` array 
 
 | Argument | Description | Example |
 | ------------- | ------------- | ------------- |
-| polyspace-root | Root directory of the Polyspace as You Code installation. If not set, the server auto-discovers the installation from the installer registry (`polyspace_products.prf`). | `"--polyspace-root=/usr/local/Polyspace/R2026a"` |
+| polyspace-root | Root directory of the Polyspace as You Code installation. If not set, the server automatically detects the installation from the installer registry (`polyspace_products.prf`). | `"--polyspace-root=/usr/local/Polyspace/R2026a"` |
 | log-folder | Directory where server log files are written. | `"--log-folder=/tmp/polyspace-logs"` |
 | log-level | Log verbosity level. Default: `info`. | `"--log-level=debug"` |
 | disable-telemetry | To disable anonymized data collection, set this argument to `true`. For details, see [Data Collection](#data-collection). | `"--disable-telemetry=true"` |
 
 Arguments can also be set via environment variables: `POLYSPACE_ROOT`.
-
-## Repository Structure
-
-```
-polyspace-agentic-toolkit/
-├── .agents/plugins/          # Codex marketplace registry
-├── .claude-plugin/           # Claude Code marketplace manifest
-├── .claude/                  # Claude Code project settings
-├── .codex-plugin/            # Codex plugin manifest
-├── .cursor-plugin/           # Cursor plugin manifest
-├── AGENTS.md                 # Amp agent instructions
-├── CLAUDE.md                 # Claude Code agent instructions
-├── README.md                 # This file
-├── gemini-extension.json     # Gemini CLI extension metadata
-├── scripts/
-│   ├── install-global-skills.sh    # Symlink skills (Linux/macOS)
-│   └── install-global-skills.ps1   # Symlink skills (Windows)
-├── skills-catalog/
-│   ├── README.md
-│   ├── polyspace-as-you-code/      # 9 static analysis skills
-│   │   ├── run-analysis/
-│   │   ├── fix-findings/
-│   │   ├── justify-findings/
-│   │   ├── query-justification-catalog/
-│   │   ├── configure-build-options/
-│   │   ├── configure-checkers/
-│   │   ├── find-checker-documentation/
-│   │   ├── find-option-documentation/
-│   │   └── documentation-entry-points/
-│   ├── polyspace-test/             # 1 test generation skill
-│   │   └── generate-xunit-tests/
-│   │       └── reference/          # C and C++ API docs
-│   └── polyspace-agentic-toolkit-setup/  # Setup skill
-│       └── reference/              # Per-agent setup guides
-```
 
 ## Data Collection
 
