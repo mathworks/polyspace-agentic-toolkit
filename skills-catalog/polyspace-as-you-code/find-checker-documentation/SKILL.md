@@ -35,3 +35,9 @@ site:mathworks.com/help/bugfinder <checker_name>
 ```
 
 **ACTION REQUIRED**: Use your web fetch tool to read the documentation page. Do not answer from memory alone.
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

@@ -51,3 +51,9 @@ If automated config writing fails:
 > 1. Open `~/.gemini/settings.json` in a text editor.
 > 2. Add a `"polyspace"` entry under `"mcpServers"` with the command and args shown above.
 > 3. Save the file and restart Gemini CLI.
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

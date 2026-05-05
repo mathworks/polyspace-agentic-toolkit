@@ -159,3 +159,9 @@ Use the same compiler and flags as the project under test to ensure compatibilit
 
 If you need details on a specific macro not covered above, grep for it in the header file:
 `<polyspace_root>/polyspace/pstest/pstunit/include/pstunit.h`
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

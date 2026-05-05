@@ -77,3 +77,9 @@ If `codex mcp add` is unavailable or fails:
 > 1. Edit `~/.codex/config.toml` directly and add the `[mcp_servers.polyspace]` section shown above.
 > 2. Create `~/.agents/skills/` symlinks manually (see shared install script for the list).
 > 3. Restart Codex.
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

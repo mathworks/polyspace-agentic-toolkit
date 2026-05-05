@@ -13,3 +13,9 @@ The skills catalog organizes agent skills into groups. Each group is a directory
 ## How Skills Are Installed
 
 Skills are not auto-discovered from this catalog. Each agent platform has a manifest file (in the repo root) that explicitly scopes which skill groups are included. See the [README](../README.md) for per-agent installation instructions.
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

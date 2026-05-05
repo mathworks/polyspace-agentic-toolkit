@@ -51,3 +51,9 @@ If automated config writing fails:
 > 1. Open `~/.cursor/mcp.json` in a text editor (create the file if it doesn't exist).
 > 2. Add a `"polyspace"` entry under `"mcpServers"` with the command and args shown above.
 > 3. Save the file and restart Cursor.
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

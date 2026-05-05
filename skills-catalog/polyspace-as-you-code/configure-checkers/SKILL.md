@@ -21,3 +21,9 @@ Standard parameters and `launch_checkers_selection_ui` are mutually exclusive.
 ## Otherwise using the binary / writing the XML directly
 
 **If the Polyspace MCP Server is NOT available**, read `cli-usage.md` in this folder for how to write the checkers XML file directly or launch the interactive UI.
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

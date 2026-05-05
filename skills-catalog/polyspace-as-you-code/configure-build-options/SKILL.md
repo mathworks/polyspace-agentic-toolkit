@@ -36,3 +36,9 @@ Exactly one of `build_command` or `ccdb_file_path` must be provided.
 - Wrong compiler detected — specify the compiler explicitly in the extra options file
 - Missing include paths — ensure the build command or compilation database is complete
 - To see all available polyspace-configure options, run `polyspace-configure -help`
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

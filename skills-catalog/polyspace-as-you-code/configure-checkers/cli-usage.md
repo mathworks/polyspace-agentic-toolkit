@@ -40,3 +40,9 @@ polyspace-checkers-selection -checkers-selection-file-readonly <checkers.xml>
 ```
 
 The file must have a `.xml` extension. The UI allows fine-grained control over individual checkers and subsets.
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

@@ -68,3 +68,9 @@ site:mathworks.com/help/bugfinder polyspace "<option_name>" option
 Use quotes around the option name and add "polyspace" and "option" as context words — this is essential for short or common option names like `-c` or `-library`.
 
 **ACTION REQUIRED**: Do not answer from memory alone. Use the approaches above to get the accurate documentation.
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

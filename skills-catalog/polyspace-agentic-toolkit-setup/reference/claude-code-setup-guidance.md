@@ -88,3 +88,9 @@ claude plugin list
 ```
 
 Confirm `polyspace` appears in the MCP server list and plugins are installed.
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

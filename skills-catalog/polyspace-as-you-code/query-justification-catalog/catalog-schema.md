@@ -33,3 +33,9 @@ Read the JSON file and match entries against the finding's family and acronym.
 - `"*"` in either field matches any value (wildcard)
 - Both `family` and `acronym` must match for an entry to be selected
 - Multiple entries can match a single finding — collect all matching comments
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

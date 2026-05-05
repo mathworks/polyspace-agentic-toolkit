@@ -38,3 +38,9 @@ polyspace-configure \
 Optional: prepend `-options-file <extra_options.txt>` for additional polyspace-configure options.
 
 The `-no-sources` flag is important: it excludes `-sources` from the output so Polyspace as You Code can specify its own single file later.
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

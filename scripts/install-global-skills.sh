@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Copyright 2026 The MathWorks, Inc.
 # install-global-skills.sh — Create symlinks for Polyspace skills in ~/.agents/skills/
 # Usage: ./scripts/install-global-skills.sh
 # This script creates symlinks from ~/.agents/skills/ to the skills-catalog in this repo.

@@ -1,3 +1,4 @@
+# Copyright 2026 The MathWorks, Inc.
 # install-global-skills.ps1 — Create symlinks/junctions for Polyspace skills in ~/.agents/skills/
 # Usage: powershell -ExecutionPolicy Bypass -File scripts\install-global-skills.ps1
 

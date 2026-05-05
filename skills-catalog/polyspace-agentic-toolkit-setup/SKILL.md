@@ -223,3 +223,9 @@ When setup is run again: read existing config from `~/.polyspace-agentic-toolkit
 - **Never skip verification** — always confirm the MCP server responds.
 - **Error handling**: If any step fails, report the error clearly and suggest manual steps. Do not proceed to the next phase if a critical step fails.
 - **Cross-platform**: All commands must work on the user's detected platform. When in doubt, show both Unix and Windows variants.
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

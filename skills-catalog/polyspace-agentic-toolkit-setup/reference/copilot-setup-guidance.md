@@ -67,3 +67,9 @@ If automated config writing fails:
 > 1. In VS Code, run the command **"MCP: Open User Configuration"** (Cmd/Ctrl + Shift + P).
 > 2. Add a `"polyspace"` entry under `"servers"` with the command and args shown above.
 > 3. Save and reload VS Code.
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

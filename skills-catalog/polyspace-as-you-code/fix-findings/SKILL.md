@@ -29,3 +29,9 @@ Invoke the `find-checker-documentation` skill to get the documentation URL for t
 ## Step 3 — Repeat
 
 Repeat steps 1-2 for each remaining finding.
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

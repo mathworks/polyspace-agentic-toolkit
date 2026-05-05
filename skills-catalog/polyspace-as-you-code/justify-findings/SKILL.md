@@ -94,3 +94,9 @@ If no catalog file is provided and the project has IDE markers (`.vscode/`, `.pr
 ## Next analysis
 
 On the next Polyspace analysis run, the annotation is recognized and the finding is marked as justified.
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

@@ -18,3 +18,9 @@ A justification catalog is a JSON file containing pre-approved justification tex
 ## Otherwise reading the catalog directly
 
 **If the Polyspace MCP Server is NOT available**, read `catalog-schema.md` in this folder for the JSON schema and matching rules to read the file directly.
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

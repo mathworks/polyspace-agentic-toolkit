@@ -43,3 +43,9 @@ site:mathworks.com/help/bugfinder <your question>
 | Project setup | https://www.mathworks.com/help/polyspace_test/project-setup.html |
 
 **ACTION REQUIRED**: Fetch the relevant page(s) above or use web search. Do not answer from memory alone.
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

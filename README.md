@@ -208,7 +208,7 @@ Polyspace is a registered trademark of The MathWorks, Inc. See [mathworks.com/tr
 We welcome feedback through [GitHub Issues](https://github.com/polyspace/polyspace-agentic-toolkit/issues). Pull requests are reviewed for ideas and feedback but are not merged from external contributors. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## Licensing and Usage
-The Polyspace Agentic Toolkit is licensed with [MathWorks BSD-3 Clause](LICENSE). It is solely for use in conjunction with MathWorks products and service offerings.
+The Polyspace MCP server is only permitted to be used with Polyspace products in accordance with the MathWorks Software License Agreement, and must not be shared by multiple users. Contact MathWorks if you need to support shared or centralized use.
 
 ## Contact Support
 MathWorks encourages you to use this repository and provide feedback. To request technical support or submit an enhancement request, [create a GitHub issue](https://github.com/polyspace/polyspace-agentic-toolkit/issues) or email [genai-support@mathworks.com](mailto:genai-support@mathworks.com). For Polyspace as You Code issues and support, see the [Polyspace as You Code documentation](https://www.mathworks.com/help/payc).

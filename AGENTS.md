@@ -19,3 +19,9 @@ Five MCP tools are available when the MCP server is connected (see README.md for
 - `configure_checkers_for_polyspace`
 - `get_polyspace_documentation`
 - `query_justification_catalog`
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

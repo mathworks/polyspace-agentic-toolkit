@@ -48,3 +48,9 @@ If the user asked to fix findings or make the code compliant (not just run analy
 
 - **If skills are available**, invoke the `fix-findings` skill. Do NOT skip the skill and call MCP tools directly — the skill defines the full fix/justify workflow.
 - **If skills are not available**, read `fix-findings/SKILL.md` and `justify-findings/SKILL.md` in this skill's parent folder for the fix/justify workflows.
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

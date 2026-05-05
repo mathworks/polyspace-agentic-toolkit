@@ -64,3 +64,9 @@ If automated config writing fails:
 > 1. Open `~/.config/amp/settings.json` in a text editor (create the file and directory if they don't exist).
 > 2. Add the `amp.mcpServers.polyspace` and `amp.skills.path` entries shown above.
 > 3. Save the file and restart Amp.
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---

@@ -1,0 +1,51 @@
+# Copyright 2026 The MathWorks, Inc.
+name: Check Copyright
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check-copyright:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check copyright in modified files
+        run: |
+          YEAR=$(date +%Y)
+          EXIT_CODE=0
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            FILES=$(git diff --name-only --diff-filter=ACMR ${{ github.event.pull_request.base.sha }} ${{ github.sha }})
+          else
+            FILES=$(git diff --name-only --diff-filter=ACMR HEAD~1 HEAD 2>/dev/null || git ls-files)
+          fi
+
+          for file in $FILES; do
+            # Skip JSON files
+            if [[ "$file" == *.json ]]; then
+              continue
+            fi
+
+            # Skip deleted files
+            if [ ! -f "$file" ]; then
+              continue
+            fi
+
+            # Accept: "Copyright 2026 The MathWorks, Inc." (inception year)
+            # or "Copyright 2026-<current_year> The MathWorks, Inc." (range ending in current year)
+            if ! grep -qiE "Copyright\s+2026(-${YEAR})?\s+The MathWorks, Inc\." "$file"; then
+              echo "::error file=${file}::Missing or outdated copyright. Expected: Copyright 2026-${YEAR} The MathWorks, Inc."
+              EXIT_CODE=1
+            fi
+          done
+
+          if [ $EXIT_CODE -eq 0 ]; then
+            echo "All modified files have correct copyright."
+          fi
+
+          exit $EXIT_CODE

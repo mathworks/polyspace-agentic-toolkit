@@ -37,3 +37,9 @@ polyspace-results-export -format json-sarif \
 Read the resulting `results.sarif` file (standard SARIF 2.1.0 JSON format) to get findings.
 
 To see all available analysis options, run `polyspace-as-you-code -help` (or `polyspace-bug-finder-access -help` for older versions).
+
+---
+
+Copyright 2026 The MathWorks, Inc.
+
+---
