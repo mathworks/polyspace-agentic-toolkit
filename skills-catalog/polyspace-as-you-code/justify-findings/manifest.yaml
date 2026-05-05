@@ -1,0 +1,13 @@
+# Copyright 2026 The MathWorks, Inc.
+# manifest.yaml — Tooling metadata for justify-findings
+schema_version: 1
+license: MathWorks BSD-3-Clause
+scope: product
+version: "1.0"
+requires-tools:
+  - query_justification_catalog
+requires-skills:
+  - query-justification-catalog
+requires-products:
+  - "Polyspace as You Code"
+toolkit: polyspace-agentic-toolkit

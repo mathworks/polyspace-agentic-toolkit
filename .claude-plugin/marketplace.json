@@ -1,0 +1,48 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "polyspace-agentic-toolkit",
+  "owner": {
+    "name": "MathWorks"
+  },
+  "plugins": [
+    {
+      "name": "polyspace-agentic-toolkit-setup",
+      "version": "1.0.0",
+      "description": "Setup and management for the Polyspace Agentic Toolkit",
+      "author": {
+        "name": "MathWorks"
+      },
+      "keywords": ["polyspace", "setup", "configuration"],
+      "source": "./",
+      "category": "development",
+      "strict": false,
+      "skills": "./skills-catalog/polyspace-agentic-toolkit-setup/"
+    },
+    {
+      "name": "polyspace-as-you-code",
+      "version": "1.0.0",
+      "description": "Static analysis skills for C/C++ code using Polyspace as You Code — run analysis, fix and justify findings, configure checkers and build options",
+      "author": {
+        "name": "MathWorks"
+      },
+      "keywords": ["polyspace", "static-analysis", "MISRA", "CERT", "CWE", "C", "C++"],
+      "source": "./",
+      "category": "development",
+      "strict": false,
+      "skills": "./skills-catalog/polyspace-as-you-code/"
+    },
+    {
+      "name": "polyspace-test",
+      "version": "1.0.0",
+      "description": "Unit test generation for C/C++ using the Polyspace XUnit framework (PSTUnit)",
+      "author": {
+        "name": "MathWorks"
+      },
+      "keywords": ["polyspace", "testing", "xunit", "PSTUnit"],
+      "source": "./",
+      "category": "development",
+      "strict": false,
+      "skills": "./skills-catalog/polyspace-test/"
+    }
+  ]
+}

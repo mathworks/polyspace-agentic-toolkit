@@ -1,0 +1,11 @@
+# Copyright 2026 The MathWorks, Inc.
+# manifest.yaml — Tooling metadata for polyspace-agentic-toolkit-setup
+schema_version: 1
+license: MathWorks BSD-3-Clause
+scope: cross-product
+version: "1.0"
+requires-tools: []
+requires-skills: []
+requires-products:
+  - "Polyspace as You Code"
+toolkit: polyspace-agentic-toolkit

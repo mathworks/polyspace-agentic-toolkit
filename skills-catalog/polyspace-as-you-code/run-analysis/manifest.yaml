@@ -1,0 +1,15 @@
+# Copyright 2026 The MathWorks, Inc.
+# manifest.yaml — Tooling metadata for run-analysis
+schema_version: 1
+license: MathWorks BSD-3-Clause
+scope: product
+version: "1.0"
+requires-tools:
+  - run_polyspace_as_you_code
+requires-skills:
+  - configure-build-options
+  - configure-checkers
+  - fix-findings
+requires-products:
+  - "Polyspace as You Code"
+toolkit: polyspace-agentic-toolkit
