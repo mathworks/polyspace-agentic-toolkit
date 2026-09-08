@@ -1,18 +1,21 @@
 # Polyspace Agentic Toolkit
 
-Run Polyspace&reg; as You Code&trade; static code analysis on your C/C++ code using AI applications with the official Polyspace&reg; Agentic Toolkit from MathWorks&reg;.
+Analyze or test C/C++ code using AI applications with the official Polyspace&reg; Agentic Toolkit from MathWorks&reg;.
 
 ## What It Does
-The Polyspace Agentic Toolkit gives your agent the knowledge and context to work with Polyspace efficiently. With the Polyspace MCP Server and its companion skills, you can ask your AI assistant to perform Polyspace as You Code and Polyspace Test workflows. For example:
+The Polyspace Agentic Toolkit gives your agent the knowledge and context to work with Polyspace efficiently. With the Polyspace MCP Server and its companion skills, you can ask your AI assistant to perform Polyspace workflows. For example:
 
-- **"Make this file compliant with `<coding standard>`"** — Run a Polyspace as You Code analysis, fix violations, and re-run analysis until the file is clean.
-- **"Check that my changes are compliant"** — Analyze a modified file and address any new findings.
+- **"Make this file compliant with `<coding standard>`"** — Run an analysis, fix violations, and re-run until the file is clean.
+- **"Run Bug Finder on my component and prioritize what to fix"** — Analyze multiple files, review findings, and rank by severity.
+- **"Prove this module is free of run-time errors"** — Run Code Prover to formally verify the absence of overflows, null dereferences, and other run-time errors.
+- **"Triage the orange checks and tell me which are real bugs."** — Inspect unproven Code Prover checks and separate real issues from analysis imprecision.
 - **"Fix these findings"** — Understand each finding, apply a code fix, and re-run analysis to confirm.
 - **"Justify this finding"** — Insert a correctly formatted Polyspace annotation comment, optionally using pre-approved texts from a team justification catalog.
 - **"Set up `<coding standard>` checking"** — Create or modify the checkers XML file to enable specific coding standards.
 - **"Configure build options for my project"** — Generate a build options file from a build command or `compile_commands.json`.
 - **"What does the `-target` option do?"** — Look up documentation for any Polyspace option, checker, or coding rule.
 - **"Generate unit tests for this function"** — Write tests using the Polyspace XUnit framework (PSTUnit).
+- **"Find functions in this folder not covered by tests"** — Run xUnit tests and find code coverage of source functions.
 
 ## How It Works
 
@@ -36,8 +39,8 @@ The Polyspace Agentic Toolkit gives your agent the knowledge and context to work
                                                       |
                                                       v
                                              +------------------+
-                                             | Polyspace as You |
-                                             | Code (binary)    |
+                                             | Polyspace        |
+                                             |      (binary)    |
                                              +------------------+
 ```
 
@@ -54,14 +57,14 @@ The AI assistant reads **skills** (instructional markdown files) for domain know
 | [Sourcegraph Amp](https://ampcode.com/) | Automated |
 | [Cursor](https://www.cursor.com/) | Automated |
 
-Polyspace as You Code R2026a recommended. Previous versions back to R2024b are supported.
+Polyspace R2026a recommended. Previous versions back to R2025a are supported.
 
 The Polyspace Agentic Toolkit is supported on Linux, macOS, and Windows operating systems.
 
 ## Quick Start
 
 **Prerequisites:**
-* [Polyspace as You Code](https://www.mathworks.com/products/polyspace.html) R2024b or later
+* An installation of at least one of these [Polyspace](https://www.mathworks.com/products/polyspace.html) products version R2025a or later: Polyspace as You Code, Polyspace Bug Finder, Polyspace Code Prover, or Polyspace Test 
 * Supported AI coding agent
 * Git&trade;
 
@@ -222,9 +225,9 @@ Several Polyspace MCP Server tools accept paths to configuration files that are 
 
 | File | Used by | Description |
 | --- | --- | --- |
-| Checkers XML | `run_polyspace_as_you_code`, `configure_checkers_for_polyspace` | Defines which defects and coding standards are enabled during a Polyspace analysis. |
-| Build options file | `run_polyspace_as_you_code`, `configure_build_options_from_build_command`, `configure_build_options_from_ccdb` | Specifies include paths, defines, and compiler settings. |
-| Options file | `run_polyspace_as_you_code` | Additional Polyspace as You Code analysis options. |
+| Checkers XML | `run_polyspace_as_you_code`, `run_polyspace_bug_finder`, `run_polyspace_code_prover`, `configure_checkers_for_polyspace` | Defines which defects and coding standards are enabled during a Polyspace analysis. |
+| Build options file | `run_polyspace_as_you_code`, `run_polyspace_bug_finder`, `run_polyspace_code_prover`, `configure_build_options_from_build_command`, `configure_build_options_from_ccdb` | Specifies include paths, defines, and compiler settings. |
+| Options file | `run_polyspace_as_you_code`, `run_polyspace_bug_finder`, `run_polyspace_code_prover` | Additional Polyspace analysis options. |
 | Justification catalog | `query_justification_catalog` | Pre-approved justification texts for known findings. |
 
 To have your AI assistant use these files automatically, create an **agent instructions file** at the root of your project. Most AI applications support a project-level instructions file that the assistant reads at the start of every conversation:
@@ -256,7 +259,7 @@ Customize the behavior of the server by providing arguments in the `args` array 
 
 | Argument | Description | Example |
 | ------------- | ------------- | ------------- |
-| polyspace-root | Root directory of the Polyspace as You Code installation. If not set, the server automatically detects the installation from the installer registry (`polyspace_products.prf`). | `"--polyspace-root=/usr/local/Polyspace/R2026a"` |
+| polyspace-root | Root directory of the Polyspace installation. If not set, the server automatically detects the installation from the installer registry (`polyspace_products.prf`). | `"--polyspace-root=/usr/local/Polyspace/R2026a"` |
 | log-folder | Directory where server log files are written. | `"--log-folder=/tmp/polyspace-logs"` |
 | log-level | Log verbosity level. Default: `info`. | `"--log-level=debug"` |
 | disable-telemetry | To disable anonymized data collection, set this argument to `true`. For details, see [Data Collection](#data-collection). | `"--disable-telemetry=true"` |
@@ -283,7 +286,7 @@ MCP servers are only permitted to be used with MATLAB and Polyspace in accordanc
 
 ## Contact Support
 
-MathWorks encourages you to use this repository and provide feedback. To request technical support or submit an enhancement request, [create a GitHub issue](https://github.com/mathworks/polyspace-agentic-toolkit/issues) or [contact technical support](https://www.mathworks.com/support/contact_us.html). For Polyspace as You Code issues and support, see the [Polyspace as You Code documentation](https://www.mathworks.com/help/payc).
+MathWorks encourages you to use this repository and provide feedback. To request technical support or submit an enhancement request, [create a GitHub issue](https://github.com/mathworks/polyspace-agentic-toolkit/issues) or [contact technical support](https://www.mathworks.com/support/contact_us.html). For product issues and support, see the [Polyspace documentation](https://www.mathworks.com/help/overview/code-verification.html) for your product.
 
 ---
 
