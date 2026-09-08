@@ -1,6 +1,11 @@
 # Copyright 2026 The MathWorks, Inc.
 # install-global-skills.ps1 — Create symlinks/junctions for Polyspace skills in ~/.agents/skills/
-# Usage: powershell -ExecutionPolicy Bypass -File scripts\install-global-skills.ps1
+# Usage: powershell -ExecutionPolicy Bypass -File scripts\install-global-skills.ps1 [group ...]
+#   With no arguments, links every skill group in skills-catalog\.
+#   With one or more group names (e.g. polyspace-core polyspace-code-prover),
+#   links only those groups so users install only the skills they need.
+
+param([Parameter(ValueFromRemainingArguments = $true)][string[]]$Groups = @())
 
 $ErrorActionPreference = "Stop"
 
@@ -24,9 +29,19 @@ try {
 
 Write-Host "Installing Polyspace skills to $SkillsDir"
 
+# Warn about any requested group that does not exist in the catalog (likely a typo).
+foreach ($g in $Groups) {
+    if (-not (Test-Path (Join-Path $SkillsCatalog $g))) {
+        Write-Host "Warning: requested group '$g' not found in $SkillsCatalog — skipping"
+    }
+}
+
 # Create flat per-skill symlinks so that each SKILL.md is at depth */SKILL.md
 # (Gemini CLI discovers skills with a one-level-deep glob only).
 foreach ($GroupDir in Get-ChildItem -Path $SkillsCatalog -Directory) {
+    # Skip groups not in the allow-list (empty allow-list = all groups).
+    if ($Groups.Count -gt 0 -and $Groups -notcontains $GroupDir.Name) { continue }
+
     # If the group itself has a SKILL.md, link it directly
     $DirectSkill = Join-Path $GroupDir.FullName "SKILL.md"
     if (Test-Path $DirectSkill) {

@@ -1,0 +1,18 @@
+# Copyright 2026 The MathWorks, Inc.
+schema_version: 1
+license: MathWorks BSD-3-Clause
+scope: product
+version: "1.2"
+requires-tools:
+  - get_orange_sources
+  - get_static_ranges
+  - get_call_graph
+  - list_source_file_snapshots
+requires-skills:
+  - polyspace-justify-in-database
+  - polyspace-fix-findings
+reference-files:
+  - references/cli-usage.md
+requires-products:
+  - "Polyspace Code Prover"
+toolkit: polyspace-agentic-toolkit

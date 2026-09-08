@@ -3,11 +3,15 @@ name: polyspace-agentic-toolkit-setup
 description: Sets up the Polyspace Agentic Toolkit for any supported AI agent. Use when the user asks to "set up Polyspace", "set up the Polyspace Agentic Toolkit", "install the Polyspace MCP Server", "configure Polyspace for my agent", or wants to get Polyspace working with their AI application.
 license: MathWorks BSD-3-Clause
 metadata:
-  version: "1.0"
+  version: "1.3"
 ---
 # Polyspace Agentic Toolkit — Setup Skill
 
 Automated setup for the Polyspace Agentic Toolkit. This skill guides through platform detection, MCP server binary installation, agent configuration, and verification.
+
+## When NOT to Use
+
+- Just reading the already-configured Polyspace installation path — invoke `resolve-polyspace-root`
 
 ## Overview
 
@@ -29,14 +33,19 @@ Run these discovery steps silently (no user interaction needed).
 |----------|-----------|-------------------|--------------|
 | Linux x86_64 | `uname -s` = Linux, `uname -m` = x86_64 | `polyspace-mcp-server-glnxa64` | `~/.local/bin/polyspace-mcp-server` |
 | macOS arm64 | `uname -s` = Darwin, `uname -m` = arm64 | `polyspace-mcp-server-maca64` | `~/.local/bin/polyspace-mcp-server` |
-| macOS x86_64 | `uname -s` = Darwin, `uname -m` = x86_64 | `polyspace-mcp-server-maci64` | `~/.local/bin/polyspace-mcp-server` |
 | Windows x86_64 | `$env:OS` = Windows_NT or `OSTYPE` contains msys/cygwin | `polyspace-mcp-server-win64.exe` | `%LOCALAPPDATA%\polyspace\polyspace-mcp-server.exe` |
 
-### 1b. Check for existing Polyspace installation
+Intel Mac (`uname -m` = x86_64 on Darwin) is not supported — no Intel Mac binary is published.
+
+### 1b. Determine the Polyspace installation root
+
+The setup must resolve an explicit Polyspace root and pin it via `--polyspace-root` (step 3b). Do NOT rely on the MCP server's runtime auto-discovery — it is unreliable and must not be used as the resolution strategy.
 
 Look for `polyspace-as-you-code` (or `polyspace-bug-finder-access` for older versions) in PATH. If found, note the Polyspace root — the binary is at `<root>/polyspace/bin/<binary>`, so strip two parent directories.
 
-If not in PATH, check the installer registry file `polyspace_products.prf` at the platform-specific default location. If neither works, the MCP server will auto-discover at runtime — note this for the plan.
+If not in PATH, check the installer registry file `polyspace_products.prf` at the platform-specific default location.
+
+If neither resolves the root, mark it **not found** — Phase 2 will ask the user for the installation path before proceeding.
 
 **Validate the Polyspace version.** Read `VersionInfo.xml` from the Polyspace root (`<root>/polyspace/VersionInfo.xml` or `<root>/VersionInfo.xml`) and extract the release string. Polyspace must be **R2024b or later**. If the version is older, report it in the plan and warn that it is unsupported.
 
@@ -57,8 +66,8 @@ Check if the binary already exists at the install path. If yes, note the version
 ### 1e. Check for existing config
 
 Check for a prior state file:
-- Linux/macOS: `~/.polyspace-agentic-toolkit/config.json`
-- Windows: `%LOCALAPPDATA%\polyspace-agentic-toolkit\config.json`
+- Linux/macOS: `~/.config/polyspace-agentic-toolkit/config.json`
+- Windows: `%APPDATA%\polyspace-agentic-toolkit\config.json`
 
 If a config exists with valid paths, note the stored values as defaults for Phase 2.
 
@@ -78,6 +87,33 @@ Check if the MCP server is already registered with the detected agent (e.g., che
 
 If a `polyspace` MCP server entry already exists, compare its command, binary path, and args (including `--polyspace-root`) against the expected values from this setup. If they all match, the config is **up to date** — note this for the plan. If any value differs, the config is **stale and must be updated** in Phase 3.
 
+### 1h. Detect installed Polyspace products
+
+Using the Polyspace root resolved in step 1b, list the product launchers in
+`<root>/polyspace/bin/` to determine which Polyspace products are installed.
+This drives which skill groups to recommend in Phase 2 — the user should not
+install skills for products they do not have. On Windows the launchers carry a
+`.exe` suffix.
+
+| Product | Launcher in `<root>/polyspace/bin/` (any of) | Skill group |
+|---------|----------------------------------------------|-------------|
+| Polyspace as You Code | `polyspace-as-you-code`, `polyspace-bug-finder-access` (older releases) | `polyspace-as-you-code` |
+| Polyspace Bug Finder | `polyspace-bug-finder`, `polyspace-bug-finder-server` | `polyspace-bug-finder` |
+| Polyspace Code Prover | `polyspace-code-prover`, `polyspace-code-prover-server` | `polyspace-code-prover` |
+| Polyspace Test | `polyspace-test` | `polyspace-test` |
+
+Build the **recommended skill-group set** from what was detected:
+
+- **`polyspace-core`** — always (every toolkit user needs it).
+- **`polyspace-static-core`** — whenever any of Polyspace as You Code, Bug
+  Finder, or Code Prover is detected (those products depend on its shared
+  review / fix / justify skills).
+- The matching product group for each product detected above.
+
+If the Polyspace root was **not found** in step 1b, product detection is not
+possible — Phase 2 asks the user which products they have (defaulting to all
+four) after asking for the installation path, then derives the set the same way.
+
 ## Phase 2: Plan
 
 Present a summary of all findings to the user:
@@ -86,7 +122,7 @@ Present a summary of all findings to the user:
 Polyspace Agentic Toolkit — Setup Plan
 
 Platform:           <detected platform>
-Polyspace root:     <path or "will auto-discover at runtime">
+Polyspace root:     <path or "NOT FOUND — will ask">
 Polyspace version:  <R20XXx or "not found">
 
 MCP server:
@@ -96,10 +132,30 @@ MCP server:
 
 AI agent:           <detected agent>
 MCP registration:   <up to date / stale — will update / not configured — will configure>
-Skills:             <will install from skills-catalog/>
 
-Proceed? [Y/n]
+Polyspace products detected (step 1h):
+  Polyspace as You Code:  <yes / no>
+  Polyspace Bug Finder:   <yes / no>
+  Polyspace Code Prover:  <yes / no>
+  Polyspace Test:         <yes / no>
+
+Skills to install (only what you need):
+  polyspace-core          (always)
+  polyspace-static-core   (shared — any static-analysis product)
+  <one line per detected product group, e.g. polyspace-code-prover>
+
+Proceed with this skill set? [Y/n]  (you can add or drop groups)
 ```
+
+If the Polyspace root was **not found** in Phase 1, ask the user for the installation path now and validate it as in step 1b (check `<path>/polyspace/bin/` and `VersionInfo.xml`) before showing "Proceed?". If the user has no Polyspace installed, note that Polyspace must be installed first — the toolkit can still be set up, but the tools will not work until Polyspace is present and setup is re-run to pin its root.
+
+**Confirm the skill set.** Present the detected products and the recommended
+skill-group set (from step 1h). Let the user add or drop groups before
+continuing — for example, they may want a product's skills even though that
+product is not installed yet, or may want to skip one they will not use. If the
+root was not found, ask which of the four products they have (defaulting to all)
+and derive the set the same way. Record the **confirmed skill-group set** —
+Phase 3 installs exactly those groups, nothing more.
 
 Wait for user confirmation before proceeding.
 
@@ -128,30 +184,40 @@ Run all steps without interruption.
 
 ### 3b. Configure the AI agent
 
-Read the appropriate per-agent setup guidance file from `reference/` in this folder:
+Read the appropriate per-agent setup guidance file from `references/` in this folder:
 
 | Agent | Reference file |
 |-------|---------------|
-| Claude Code | `reference/claude-code-setup-guidance.md` |
-| GitHub Copilot | `reference/copilot-setup-guidance.md` |
-| Cursor | `reference/cursor-setup-guidance.md` |
-| Sourcegraph Amp | `reference/amp-setup-guidance.md` |
-| OpenAI Codex | `reference/codex-setup-guidance.md` |
-| Gemini CLI | `reference/gemini-cli-setup-guidance.md` |
+| Claude Code | `references/claude-code-setup-guidance.md` |
+| GitHub Copilot | `references/copilot-setup-guidance.md` |
+| Cursor | `references/cursor-setup-guidance.md` |
+| Sourcegraph Amp | `references/amp-setup-guidance.md` |
+| OpenAI Codex | `references/codex-setup-guidance.md` |
+| Gemini CLI | `references/gemini-cli-setup-guidance.md` |
 
 Follow the steps in the reference file to register the MCP server and configure skills for the detected agent.
 
-When configuring the MCP server command, include the `--polyspace-root=<POLYSPACE_ROOT>` argument if a Polyspace installation was found. This tells the server where to find Polyspace binaries without relying on PATH.
+When configuring the MCP server command, always include the `--polyspace-root=<POLYSPACE_ROOT>` argument, using the root resolved in Phase 1b / Phase 2. This pins the Polyspace installation explicitly instead of relying on the server's runtime auto-discovery. (Only omit it in the edge case where the user confirmed Polyspace is not yet installed — in which case the tools will not work until setup is re-run with a resolved root.)
 
 **Skip this step if the existing agent configuration is already up to date** (as determined in step 1g). Only add or update the `polyspace` MCP entry — never overwrite entries for other MCP servers.
 
-### 3c. Register global skills (for agents that support it)
+### 3c. Register skills (only the confirmed groups)
 
-For agents that read skills from `~/.agents/skills/`, run the appropriate install script:
-- Linux/macOS: `scripts/install-global-skills.sh` (from the repo root)
-- Windows: `scripts/install-global-skills.ps1` (from the repo root)
+Install **only** the skill groups confirmed in Phase 2 — never the whole
+catalog. The per-agent reference file (step 3b) states how skills are installed
+for the detected agent; honor the confirmed set there:
 
-These scripts create symlinks from `~/.agents/skills/` to the skills-catalog in this repo.
+- **Plugin-based agents** (e.g. Claude Code): install only the plugins for the
+  confirmed groups.
+- **Symlink-based agents** (read `~/.agents/skills/`): run the shared install
+  script with the confirmed group names as arguments, so only those groups are
+  linked (from the repo root):
+  - Linux/macOS: `scripts/install-global-skills.sh <group> [<group> ...]`
+  - Windows: `scripts/install-global-skills.ps1 <group> [<group> ...]`
+
+  With no arguments the script links every group (backward-compatible), but
+  setup should always pass the confirmed set. Example:
+  `scripts/install-global-skills.sh polyspace-core polyspace-static-core polyspace-code-prover`
 
 ### 3d. Save state
 
@@ -159,12 +225,12 @@ Write configuration to the platform-specific state directory:
 
 | Platform | State directory |
 |----------|----------------|
-| Linux/macOS | `~/.polyspace-agentic-toolkit/` |
-| Windows | `%LOCALAPPDATA%\polyspace-agentic-toolkit\` |
+| Linux/macOS | `~/.config/polyspace-agentic-toolkit/` |
+| Windows | `%APPDATA%\polyspace-agentic-toolkit\` |
 
 Create the directory if needed:
-- Linux/macOS: `mkdir -p ~/.polyspace-agentic-toolkit`
-- Windows: `mkdir -p "$env:LOCALAPPDATA\polyspace-agentic-toolkit"` (PowerShell)
+- Linux/macOS: `mkdir -p "$HOME/.config/polyspace-agentic-toolkit"`
+- Windows: `mkdir -p "$env:APPDATA\polyspace-agentic-toolkit"` (PowerShell)
 
 Write `config.json`:
 
@@ -179,6 +245,8 @@ Write `config.json`:
   "lastSetup": "<ISO_8601_TIMESTAMP>"
 }
 ```
+
+This state `config.json` is the single source of truth for the resolved Polyspace root. The operative root at MCP runtime is the `--polyspace-root` argument in the agent's MCP registration (step 3b); in CLI-fallback mode (MCP server unavailable), `resolve-polyspace-root` reads `polyspaceRoot` from this same state file. Keep the two in sync. If Polyspace was not found (the user confirmed it is not installed yet), leave `polyspaceRoot` empty and re-run setup once Polyspace is installed. All paths recorded here must be absolute.
 
 ## Phase 4: Verify
 
@@ -199,7 +267,7 @@ Polyspace Agentic Toolkit — Setup Complete
 
 Binary:     <install_path>
 Agent:      <agent_name> — MCP server registered
-Skills:     Installed from skills-catalog/
+Skills:     <confirmed groups, e.g. polyspace-core, polyspace-static-core, polyspace-code-prover>
 Polyspace:  <found at path / not found — install required>
 
 Next steps:
@@ -210,12 +278,12 @@ Next steps:
 
 ## Re-run behavior
 
-When setup is run again: read existing config from `~/.polyspace-agentic-toolkit/config.json` as defaults, run full discovery, present plan showing current vs. proposed state (e.g., "Binary installed at v1.0.0 — update to v1.1.0?"), then execute and verify.
+When setup is run again: read existing config from the state file (`~/.config/polyspace-agentic-toolkit/config.json`; `%APPDATA%\polyspace-agentic-toolkit\config.json` on Windows) as defaults, run full discovery, present plan showing current vs. proposed state (e.g., "Binary installed at v1.0.0 — update to v1.1.0?"), then execute and verify.
 
 - Re-download the binary if the installed version is older than the latest GitHub release
 - Re-write agent configuration only if it is stale (binary path, args, or `--polyspace-root` differ from expected values) — skip if already up to date
 - Only add or update the `polyspace` MCP entry — never overwrite entries for other MCP servers
-- Always update the state file
+- Always update the state file (step 3d) with the current root
 
 ## Conventions and guardrails
 

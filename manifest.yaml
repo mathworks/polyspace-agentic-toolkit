@@ -1,0 +1,43 @@
+# Copyright 2026 The MathWorks, Inc.
+schema_version: 1
+
+display-name: "Polyspace Agentic Toolkit"
+description: "AI skills and MCP tools for Polyspace static analysis and unit testing of C/C++ code"
+
+# The Polyspace MCP Server binary ships as a release asset of this repository
+# (see README.md — the setup skill downloads it from the latest GitHub release).
+dependencies:
+  - repo: https://github.com/mathworks/polyspace-agentic-toolkit
+    default-version: latest
+
+skill-groups:
+  - name: polyspace-core
+    display-name: "Polyspace Core"
+    description: "Cross-product foundations: resolve the Polyspace installation root, configure build options, and find Polyspace documentation entry points. Every toolkit user needs these"
+    path: skills-catalog/polyspace-core
+    required: true
+
+  - name: polyspace-static-core
+    display-name: "Polyspace Static Core"
+    description: "Shared static-analysis skills: review, fix, and justify findings (in code or in the results database), configure checkers, and find checker/option documentation. Install alongside any Polyspace static-analysis product (as You Code, Bug Finder, Code Prover)"
+    path: skills-catalog/polyspace-static-core
+
+  - name: polyspace-as-you-code
+    display-name: "Polyspace as You Code"
+    description: "Run Polyspace as You Code file-level static analysis on the C/C++ file you are editing to find defects and coding-standard violations"
+    path: skills-catalog/polyspace-as-you-code
+
+  - name: polyspace-bug-finder
+    display-name: "Polyspace Bug Finder"
+    description: "Run Polyspace Bug Finder across several C/C++ files or a whole component to find defects and coding-standard violations"
+    path: skills-catalog/polyspace-bug-finder
+
+  - name: polyspace-code-prover
+    display-name: "Polyspace Code Prover"
+    description: "Run and review Polyspace Code Prover to prove the absence of run-time errors in C/C++ code, and triage orange (unproven) checks"
+    path: skills-catalog/polyspace-code-prover
+
+  - name: polyspace-test
+    display-name: "Polyspace Test"
+    description: "Generate, build, run, and measure coverage of C/C++ unit tests with the Polyspace XUnit framework (PSTUnit)"
+    path: skills-catalog/polyspace-test

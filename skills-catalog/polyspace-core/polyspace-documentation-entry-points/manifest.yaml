@@ -1,0 +1,10 @@
+# Copyright 2026 The MathWorks, Inc.
+# manifest.yaml — Tooling metadata for polyspace-documentation-entry-points
+schema_version: 1
+license: MathWorks BSD-3-Clause
+scope: cross-product
+version: "1.4"
+requires-tools: []
+requires-skills: []
+requires-products: []
+toolkit: polyspace-agentic-toolkit

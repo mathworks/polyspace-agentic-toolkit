@@ -1,0 +1,14 @@
+# Copyright 2026 The MathWorks, Inc.
+# manifest.yaml — Tooling metadata for generate-polyspace-test-xunit-tests
+schema_version: 1
+license: MathWorks BSD-3-Clause
+scope: product
+version: "1.3"
+requires-tools: []
+requires-skills: []
+reference-files:
+  - references/xunit_api_c.md
+  - references/xunit_api_cpp.md
+requires-products:
+  - "Polyspace Test"
+toolkit: polyspace-agentic-toolkit

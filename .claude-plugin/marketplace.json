@@ -6,43 +6,82 @@
   },
   "plugins": [
     {
-      "name": "polyspace-agentic-toolkit-setup",
-      "version": "1.0.0",
-      "description": "Setup and management for the Polyspace Agentic Toolkit",
+      "name": "polyspace-core",
+      "version": "1.1.0",
+      "description": "Cross-product foundations for the Polyspace Agentic Toolkit — resolve the Polyspace installation root, configure build options, and find Polyspace documentation entry points. Every toolkit user needs these.",
       "author": {
         "name": "MathWorks"
       },
-      "keywords": ["polyspace", "setup", "configuration"],
-      "source": "./",
+      "keywords": ["polyspace", "core", "C", "C++"],
+      "source": "./skills-catalog/polyspace-core",
       "category": "development",
       "strict": false,
-      "skills": "./skills-catalog/polyspace-agentic-toolkit-setup/"
+      "skills": "./"
     },
     {
-      "name": "polyspace-as-you-code",
+      "name": "polyspace-static-core",
       "version": "1.0.0",
-      "description": "Static analysis skills for C/C++ code using Polyspace as You Code — run analysis, fix and justify findings, configure checkers and build options",
+      "description": "Shared static-analysis skills for Polyspace as You Code, Bug Finder, and Code Prover — review, fix, and justify findings (in code or in the results database), configure checkers, and find checker/option documentation. Install alongside any Polyspace static-analysis product.",
       "author": {
         "name": "MathWorks"
       },
       "keywords": ["polyspace", "static-analysis", "MISRA", "CERT", "CWE", "C", "C++"],
-      "source": "./",
+      "source": "./skills-catalog/polyspace-static-core",
       "category": "development",
       "strict": false,
-      "skills": "./skills-catalog/polyspace-as-you-code/"
+      "skills": "./"
+    },
+    {
+      "name": "polyspace-as-you-code",
+      "version": "1.1.0",
+      "description": "Run Polyspace as You Code file-level static analysis on the C/C++ file you are editing to find defects and coding-standard violations. Pairs with polyspace-static-core for reviewing, fixing, and justifying findings.",
+      "author": {
+        "name": "MathWorks"
+      },
+      "keywords": ["polyspace", "as-you-code", "static-analysis", "MISRA", "CERT", "CWE", "C", "C++"],
+      "source": "./skills-catalog/polyspace-as-you-code",
+      "category": "development",
+      "strict": false,
+      "skills": "./"
+    },
+    {
+      "name": "polyspace-bug-finder",
+      "version": "1.0.0",
+      "description": "Run Polyspace Bug Finder across several C/C++ files or a whole component to find defects and coding-standard violations. Pairs with polyspace-static-core for reviewing, fixing, and justifying findings.",
+      "author": {
+        "name": "MathWorks"
+      },
+      "keywords": ["polyspace", "bug-finder", "static-analysis", "MISRA", "CERT", "CWE", "C", "C++"],
+      "source": "./skills-catalog/polyspace-bug-finder",
+      "category": "development",
+      "strict": false,
+      "skills": "./"
+    },
+    {
+      "name": "polyspace-code-prover",
+      "version": "1.0.0",
+      "description": "Run and review Polyspace Code Prover to prove the absence of run-time errors in C/C++ code, and triage orange (unproven) checks. Pairs with polyspace-static-core for justifying findings.",
+      "author": {
+        "name": "MathWorks"
+      },
+      "keywords": ["polyspace", "code-prover", "formal-verification", "run-time-errors", "C", "C++"],
+      "source": "./skills-catalog/polyspace-code-prover",
+      "category": "development",
+      "strict": false,
+      "skills": "./"
     },
     {
       "name": "polyspace-test",
-      "version": "1.0.0",
-      "description": "Unit test generation for C/C++ using the Polyspace XUnit framework (PSTUnit)",
+      "version": "1.2.0",
+      "description": "Generate, build, run, and measure coverage of C/C++ unit tests with the Polyspace XUnit framework (PSTUnit)",
       "author": {
         "name": "MathWorks"
       },
       "keywords": ["polyspace", "testing", "xunit", "PSTUnit"],
-      "source": "./",
+      "source": "./skills-catalog/polyspace-test",
       "category": "development",
       "strict": false,
-      "skills": "./skills-catalog/polyspace-test/"
+      "skills": "./"
     }
   ]
 }

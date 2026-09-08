@@ -1,13 +1,13 @@
 {
   "name": "polyspace-agentic-toolkit",
-  "version": "1.0.0",
-  "description": "Static analysis skills and MCP tools for C/C++ using Polyspace as You Code. Run analysis, fix and justify findings, configure checkers, and generate unit tests.",
+  "version": "1.3.0",
+  "description": "Static analysis skills and MCP tools for C/C++ using Polyspace as You Code, Bug Finder, and Code Prover. Run analysis, review, fix, and justify findings, configure checkers, and generate unit tests.",
   "author": {
     "name": "MathWorks"
   },
   "license": "MathWorks ASLA",
   "keywords": ["polyspace", "static-analysis", "MISRA", "CERT", "CWE", "C", "C++"],
-  "skills": "./skills-catalog/polyspace-as-you-code/",
+  "skills": "./skills-catalog/",
   "interface": {
     "displayName": "Polyspace MCP Server",
     "shortDescription": "Static analysis skills and MCP tools for C/C++.",

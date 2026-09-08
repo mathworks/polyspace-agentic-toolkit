@@ -1,0 +1,27 @@
+# Copyright 2026 The MathWorks, Inc.
+schema_version: 1
+license: MathWorks BSD-3-Clause
+scope: product
+version: "1.3"
+requires-tools:
+  - get_polyspace_results_summary
+  - get_polyspace_results_list
+  - get_polyspace_result_details
+  - get_call_graph
+  - get_static_ranges
+  - get_macro_expansion
+  - get_concurrency_model
+  - get_variable_accesses
+  - get_code_prover_assumptions
+  - list_source_file_snapshots
+requires-skills:
+  - polyspace-find-checker-documentation
+  - triage-orange-checks
+  - polyspace-justify-in-database
+  - polyspace-fix-findings
+  - polyspace-documentation-entry-points
+reference-files:
+  - references/cli-usage.md
+requires-products:
+  - "Polyspace Code Prover"
+toolkit: polyspace-agentic-toolkit

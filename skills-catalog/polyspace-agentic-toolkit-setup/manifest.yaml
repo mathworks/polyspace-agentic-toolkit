@@ -3,9 +3,16 @@
 schema_version: 1
 license: MathWorks BSD-3-Clause
 scope: cross-product
-version: "1.0"
+version: "1.2"
 requires-tools: []
 requires-skills: []
+reference-files:
+  - references/amp-setup-guidance.md
+  - references/claude-code-setup-guidance.md
+  - references/codex-setup-guidance.md
+  - references/copilot-setup-guidance.md
+  - references/cursor-setup-guidance.md
+  - references/gemini-cli-setup-guidance.md
 requires-products:
   - "Polyspace as You Code"
 toolkit: polyspace-agentic-toolkit

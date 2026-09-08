@@ -2,12 +2,15 @@
   "schema_version": "1.0",
   "name": "polyspace-agentic-toolkit",
   "display_name": "Polyspace Agentic Toolkit",
-  "description": "Static analysis skills and MCP tools for C/C++ using Polyspace as You Code. Run analysis, fix and justify findings, configure checkers, and generate unit tests.",
-  "version": "1.0.0",
+  "description": "Static analysis skills and MCP tools for C/C++ using Polyspace as You Code, Bug Finder, and Code Prover. Run analysis, review, fix, and justify findings, configure checkers and build options, and generate unit tests.",
+  "version": "1.3.0",
   "publisher": "mathworks",
   "skills": [
+    "skills-catalog/polyspace-core/",
+    "skills-catalog/polyspace-static-core/",
     "skills-catalog/polyspace-as-you-code/",
-    "skills-catalog/polyspace-test/",
-    "skills-catalog/polyspace-agentic-toolkit-setup/"
+    "skills-catalog/polyspace-bug-finder/",
+    "skills-catalog/polyspace-code-prover/",
+    "skills-catalog/polyspace-test/"
   ]
 }

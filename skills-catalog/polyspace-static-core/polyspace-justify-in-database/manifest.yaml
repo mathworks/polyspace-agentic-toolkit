@@ -1,0 +1,19 @@
+# Copyright 2026 The MathWorks, Inc.
+schema_version: 1
+license: MathWorks BSD-3-Clause
+scope: cross-product
+version: "1.3"
+requires-tools:
+  - add_review_information_to_result
+  - transfer_polyspace_comments
+  - get_polyspace_results_list
+requires-skills:
+  - polyspace-review-findings
+  - polyspace-fix-findings
+  - polyspace-justify-in-code
+reference-files:
+  - references/cli-usage.md
+requires-products:
+  - "Polyspace Bug Finder"
+  - "Polyspace Code Prover"
+toolkit: polyspace-agentic-toolkit

@@ -1,0 +1,18 @@
+# Copyright 2026 The MathWorks, Inc.
+# manifest.yaml — Tooling metadata for polyspace-fix-findings
+schema_version: 1
+license: MathWorks BSD-3-Clause
+scope: cross-product
+version: "1.3"
+requires-tools:
+  - run_polyspace_as_you_code
+requires-skills:
+  - polyspace-find-checker-documentation
+  - polyspace-review-findings
+  - polyspace-justify-in-code
+  - polyspace-justify-in-database
+  - run-polyspace-as-you-code-analysis
+  - run-polyspace-bug-finder-analysis
+  - run-polyspace-code-prover-analysis
+requires-products: []
+toolkit: polyspace-agentic-toolkit

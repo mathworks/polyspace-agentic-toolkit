@@ -1,6 +1,10 @@
 {
   "enabledPlugins": {
+    "polyspace-core@polyspace-agentic-toolkit": true,
+    "polyspace-static-core@polyspace-agentic-toolkit": true,
     "polyspace-as-you-code@polyspace-agentic-toolkit": true,
+    "polyspace-bug-finder@polyspace-agentic-toolkit": true,
+    "polyspace-code-prover@polyspace-agentic-toolkit": true,
     "polyspace-test@polyspace-agentic-toolkit": true
   }
 }

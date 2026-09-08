@@ -1,0 +1,25 @@
+# Copyright 2026 The MathWorks, Inc.
+schema_version: 1
+license: MathWorks BSD-3-Clause
+scope: cross-product
+version: "1.1"
+requires-tools:
+  - get_polyspace_results_summary
+  - get_polyspace_results_list
+  - get_polyspace_result_details
+  - get_call_graph
+  - get_variable_accesses
+  - get_symbol_navigation
+  - get_macro_expansion
+  - get_concurrency_model
+requires-skills:
+  - polyspace-find-checker-documentation
+  - polyspace-fix-findings
+  - polyspace-justify-in-code
+  - polyspace-justify-in-database
+reference-files:
+  - references/cli-usage.md
+requires-products:
+  - "Polyspace Bug Finder"
+  - "Polyspace as You Code"
+toolkit: polyspace-agentic-toolkit

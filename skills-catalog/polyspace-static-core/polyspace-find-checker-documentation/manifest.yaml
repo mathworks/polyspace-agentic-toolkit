@@ -1,0 +1,14 @@
+# Copyright 2026 The MathWorks, Inc.
+# manifest.yaml — Tooling metadata for polyspace-find-checker-documentation
+schema_version: 1
+license: MathWorks BSD-3-Clause
+scope: cross-product
+version: "2.3"
+requires-tools:
+  - get_polyspace_documentation
+requires-skills:
+  - resolve-polyspace-root
+reference-files:
+  - references/catalog-lookup.md
+requires-products: []
+toolkit: polyspace-agentic-toolkit

@@ -1,5 +1,5 @@
 {
   "name": "polyspace-agentic-toolkit",
-  "version": "1.0.0",
-  "description": "Static analysis skills and MCP tools for C/C++ using Polyspace as You Code. Run analysis, fix and justify findings, configure checkers, and generate unit tests."
+  "version": "1.3.0",
+  "description": "Static analysis skills and MCP tools for C/C++ using Polyspace as You Code, Bug Finder, and Code Prover. Run analysis, review, fix, and justify findings, configure checkers, and generate unit tests."
 }

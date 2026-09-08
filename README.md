@@ -86,13 +86,21 @@ The agent:
 * Reads the setup skill
 * Detects your platform
 * Locates your Polyspace installation
+* Detects which Polyspace products you have installed (as You Code, Bug Finder, Code Prover, Test)
 * Downloads and registers the MCP server binary with your agent
-* Installs skills from the toolkit
+* Installs **only the skills for the products you have** — you confirm the set before anything is installed
 
-> **Claude Code — no clone required**: If you already have the MCP server binary configured, you can add the skills directly without cloning:
+> **Why selective?** The toolkit ships skills for every Polyspace product, but agents trigger the right skill more reliably when fewer are loaded. Setup therefore installs only the skill groups matching your installed products (plus the always-on `polyspace-core`, and the shared `polyspace-static-core` whenever any static-analysis product is present). To add or remove products later, just re-run setup ("Set up the Polyspace Agentic Toolkit") and adjust the confirmed set.
+
+> **Claude Code — no clone required**: If you already have the MCP server binary configured, you can add the skills directly without cloning. Always install `polyspace-core`. For static analysis (Polyspace as You Code, Bug Finder, or Code Prover), also install the shared `polyspace-static-core` plugin plus the product plugin(s) you have. Add only the plugins matching your installed Polyspace products:
 > ```
 > claude plugin marketplace add "https://github.com/mathworks/polyspace-agentic-toolkit"
-> claude plugin install polyspace-as-you-code@polyspace-agentic-toolkit
+> claude plugin install polyspace-core@polyspace-agentic-toolkit          # always
+> claude plugin install polyspace-static-core@polyspace-agentic-toolkit   # shared review/fix/justify — with any static-analysis product
+> claude plugin install polyspace-as-you-code@polyspace-agentic-toolkit   # Polyspace as You Code (file-level analysis)
+> claude plugin install polyspace-bug-finder@polyspace-agentic-toolkit    # Polyspace Bug Finder (multi-file / component)
+> claude plugin install polyspace-code-prover@polyspace-agentic-toolkit   # Polyspace Code Prover (prove absence of run-time errors)
+> claude plugin install polyspace-test@polyspace-agentic-toolkit          # Polyspace Test
 > ```
 
 ### Already Have the MCP Server Binary?
@@ -112,39 +120,97 @@ The agent searches the current directory for a C or C++ file to run an analysis 
 
 The Polyspace Agentic Toolkit provides the following tools:
 
-| Tool | Description |
+| Tools | Description |
 | --- | --- |
-| `run_polyspace_as_you_code` | Run Polyspace as You Code on a C/C++ source file to find coding standard violations and defects. |
-| `configure_build_options_for_polyspace` | Create a build options file from a build command or compilation database (`compile_commands.json`). |
-| `configure_checkers_for_polyspace` | Create or modify the checkers XML file that selects which coding standards to check. |
-| `get_polyspace_documentation` | List available command-line options for `polyspace-as-you-code` or `polyspace-configure`. |
-| `query_justification_catalog` | Query a justification catalog JSON file for pre-approved justification texts matching one or more findings. |
+| `run_polyspace_as_you_code`, `run_polyspace_bug_finder`, `run_polyspace_code_prover` | Run Polyspace as You Code, Bug Finder, or Code Prover on C/C++ code to find defects, coding-standard violations, and run-time errors. |
+| `configure_build_options_from_ccdb`, `configure_build_options_from_build_command`, `configure_checkers_for_polyspace` | Generate build options from a compilation database (`compile_commands.json`) or a build command, and select which checkers run. |
+| `get_polyspace_documentation` | Look up Polyspace command-line options and documentation. |
+| `get_polyspace_results_list`, `get_polyspace_results_summary`, `get_polyspace_result_details`, `list_source_file_snapshots`, `search_source_file_snapshots`, `get_source_file_snapshot`, `get_symbol_navigation`, `get_macro_expansion`, `get_analysis_options`, `get_call_graph`, `get_variable_accesses` | Explore and inspect analysis results: list and summarize findings, drill into a finding, browse analyzed source, and navigate symbols, macros, call graphs, and variable accesses. |
+| `get_code_prover_assumptions`, `get_concurrency_model`, `get_orange_sources`, `get_static_ranges` | Code Prover&ndash;specific inspection: proof assumptions, concurrency model, orange (unproven) sources, and computed value ranges. |
+| `add_review_information_to_result`, `transfer_polyspace_comments`, `query_justification_catalog`, `generate_report` | Triage and reporting: set review status and justifications, carry comments across runs, query the justification catalog, and generate reports. |
+
+> Code Prover&ndash;specific tools are registered only when a Code Prover analysis is active.
 
 ## Agent Skills
 
 Skills are instructional markdown guides in [`skills-catalog/`](skills-catalog/) that teach the AI assistant how to perform Polyspace workflows. Each skill has a `SKILL.md` with step-by-step instructions and a `manifest.yaml` with metadata.
 
-### Polyspace as You Code
+Skills are organized into groups. Automated setup installs only the groups you need — the mapping below is what it applies, and what to install by hand if you prefer:
+
+| Group | Install when | Provides |
+| --- | --- | --- |
+| **`polyspace-core`** | **Always** | Resolve installation root, configure build options, documentation entry points |
+| **`polyspace-static-core`** | Any static-analysis product is present (Polyspace as You Code, Bug Finder, **or** Code Prover) | Shared review, fix, and justify findings; configure checkers; checker and option documentation |
+| **`polyspace-as-you-code`** | You have Polyspace as You Code | File-level analysis of the file you are editing |
+| **`polyspace-bug-finder`** | You have Polyspace Bug Finder | Multi-file / whole-component analysis |
+| **`polyspace-code-prover`** | You have Polyspace Code Prover | Prove the absence of run-time errors |
+| **`polyspace-test`** | You have Polyspace Test | Author and run PSTUnit tests |
+
+Two invariants: **`polyspace-core` is always installed**, and **`polyspace-static-core` is installed as soon as any static-analysis product (as You Code, Bug Finder, or Code Prover) is present** — it holds the review/fix/justify workflow those products share. `polyspace-test` drives dynamic testing and does **not** require `polyspace-static-core`. Install only the groups for the products you actually have: agents trigger the right skill more reliably when fewer are loaded. In Claude Code the invariant is enforced for you — each product plugin declares `polyspace-static-core` as a dependency, so installing `polyspace-as-you-code`, `polyspace-bug-finder`, or `polyspace-code-prover` pulls it in automatically.
+
+### Polyspace Core
+
+Always installed.
 
 | Skill | Description |
 | --- | --- |
-| [run-analysis](skills-catalog/polyspace-as-you-code/run-analysis/) | Run an analysis on a C/C++ source file |
-| [fix-findings](skills-catalog/polyspace-as-you-code/fix-findings/) | Understand, fix, or justify findings after analysis |
-| [justify-findings](skills-catalog/polyspace-as-you-code/justify-findings/) | Annotation syntax, formatting, and writing guidelines |
-| [query-justification-catalog](skills-catalog/polyspace-as-you-code/query-justification-catalog/) | Catalog JSON schema and matching rules |
-| [configure-build-options](skills-catalog/polyspace-as-you-code/configure-build-options/) | Create a build options file |
-| [configure-checkers](skills-catalog/polyspace-as-you-code/configure-checkers/) | Create or modify the checkers XML file |
-| [find-checker-documentation](skills-catalog/polyspace-as-you-code/find-checker-documentation/) | Find documentation for defects and coding standards |
-| [find-option-documentation](skills-catalog/polyspace-as-you-code/find-option-documentation/) | Find documentation for Polyspace analysis options |
-| [documentation-entry-points](skills-catalog/polyspace-as-you-code/documentation-entry-points/) | Top-level Polyspace documentation URLs |
+| [resolve-polyspace-root](skills-catalog/polyspace-core/resolve-polyspace-root/) | Resolve the Polyspace installation root for CLI fallbacks |
+| [polyspace-configure-build-options](skills-catalog/polyspace-core/polyspace-configure-build-options/) | Create a build options file from a build command or compilation database |
+| [polyspace-documentation-entry-points](skills-catalog/polyspace-core/polyspace-documentation-entry-points/) | Top-level Polyspace documentation URLs |
+
+### Polyspace Static Core
+
+Shared static-analysis skills. Install alongside any static-analysis product (Polyspace as You Code, Bug Finder, or Code Prover).
+
+| Skill | Description |
+| --- | --- |
+| [polyspace-review-findings](skills-catalog/polyspace-static-core/polyspace-review-findings/) | Read, explain, and prioritize defects and coding-standard violations |
+| [polyspace-fix-findings](skills-catalog/polyspace-static-core/polyspace-fix-findings/) | Understand, fix, or justify findings after analysis |
+| [polyspace-justify-in-code](skills-catalog/polyspace-static-core/polyspace-justify-in-code/) | Justify a finding with an in-source annotation comment |
+| [polyspace-justify-in-database](skills-catalog/polyspace-static-core/polyspace-justify-in-database/) | Record a review status/rationale in the results database and carry it across re-runs |
+| [polyspace-query-justification-catalog](skills-catalog/polyspace-static-core/polyspace-query-justification-catalog/) | Catalog JSON schema and matching rules |
+| [polyspace-configure-checkers](skills-catalog/polyspace-static-core/polyspace-configure-checkers/) | Create or modify the checkers XML file |
+| [polyspace-find-checker-documentation](skills-catalog/polyspace-static-core/polyspace-find-checker-documentation/) | Find documentation for defects and coding standards |
+| [polyspace-find-option-documentation](skills-catalog/polyspace-static-core/polyspace-find-option-documentation/) | Find documentation for Polyspace analysis options |
+
+### Polyspace as You Code
+
+Install if you have Polyspace as You Code. File-level analysis of the file you are editing.
+
+| Skill | Description |
+| --- | --- |
+| [run-polyspace-as-you-code-analysis](skills-catalog/polyspace-as-you-code/run-polyspace-as-you-code-analysis/) | Run a file-level analysis on a single C/C++ source file |
+
+### Polyspace Bug Finder
+
+Install if you have Polyspace Bug Finder. Multi-file / whole-component analysis.
+
+| Skill | Description |
+| --- | --- |
+| [run-polyspace-bug-finder-analysis](skills-catalog/polyspace-bug-finder/run-polyspace-bug-finder-analysis/) | Run Bug Finder across several files or a whole component |
+
+### Polyspace Code Prover
+
+Install if you have Polyspace Code Prover. Prove the absence of run-time errors.
+
+| Skill | Description |
+| --- | --- |
+| [run-polyspace-code-prover-analysis](skills-catalog/polyspace-code-prover/run-polyspace-code-prover-analysis/) | Run Code Prover on C/C++ code |
+| [review-polyspace-code-prover-results](skills-catalog/polyspace-code-prover/review-polyspace-code-prover-results/) | Read, explain, and prioritize red/orange/green/gray checks |
+| [triage-orange-checks](skills-catalog/polyspace-code-prover/triage-orange-checks/) | Triage orange (unproven) checks and decide what to do about them |
 
 ### Polyspace Test
 
+Install if you have Polyspace Test.
+
 | Skill | Description |
 | --- | --- |
-| [generate-xunit-tests](skills-catalog/polyspace-test/generate-xunit-tests/) | Step-by-step guide to write XUnit tests (includes C and C++ API reference) |
+| [generate-polyspace-test-xunit-tests](skills-catalog/polyspace-test/generate-polyspace-test-xunit-tests/) | Author PSTUnit tests — test plan and test source (C and C++ API reference) |
+| [run-polyspace-test-xunit-tests](skills-catalog/polyspace-test/run-polyspace-test-xunit-tests/) | Build and run XUnit tests (CMake/Makefile integration, generate main, common errors) |
 
 ### Setup
+
+The setup skill is read in place from the cloned repository during installation — it is not installed as a plugin.
 
 | Skill | Description |
 | --- | --- |
@@ -157,7 +223,7 @@ Several Polyspace MCP Server tools accept paths to configuration files that are 
 | File | Used by | Description |
 | --- | --- | --- |
 | Checkers XML | `run_polyspace_as_you_code`, `configure_checkers_for_polyspace` | Defines which defects and coding standards are enabled during a Polyspace analysis. |
-| Build options file | `run_polyspace_as_you_code`, `configure_build_options_for_polyspace` | Specifies include paths, defines, and compiler settings. |
+| Build options file | `run_polyspace_as_you_code`, `configure_build_options_from_build_command`, `configure_build_options_from_ccdb` | Specifies include paths, defines, and compiler settings. |
 | Options file | `run_polyspace_as_you_code` | Additional Polyspace as You Code analysis options. |
 | Justification catalog | `query_justification_catalog` | Pre-approved justification texts for known findings. |
 
