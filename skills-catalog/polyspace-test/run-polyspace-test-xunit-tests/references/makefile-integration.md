@@ -128,6 +128,10 @@ Key differences from tests-only:
 - `-cov-metric-level` defaults to `mcdc`; change per the user's item-4 choice (`condition/decision` or `decision`).
 - `-limit-instrumentation-to` must be repeated once per source directory (it does NOT accept space-separated paths).
 
+## Troubleshooting
+
+- **Profiling stalls.** If the profiling step appears to hang or stall, the agent sandbox may be blocking it. Ask the user whether they want to run the command outside the sandbox.
+
 ---
 
 Copyright 2026 The MathWorks, Inc.

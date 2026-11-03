@@ -170,6 +170,10 @@ $PSTEST -report -report-dir report -html results
 
 This produces `report/pstest_results/pstunit/pstest_results.xml` (test results) and `report/pstest_results/profiling/pstest_results.xml` (coverage) in one invocation, assuming the monitor produced the standard `pstest_results.pstestr` + `pstest_results.psprof` filenames.
 
+## Troubleshooting
+
+- **Profiling stalls.** If the profiling step appears to hang or stall, the agent sandbox may be blocking it. Ask the user whether they want to run the command outside the sandbox.
+
 ---
 
 Copyright 2026 The MathWorks, Inc.

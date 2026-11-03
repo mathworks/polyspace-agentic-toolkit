@@ -59,7 +59,9 @@ detail is available to the review skills:
 
 **If the Polyspace MCP Server is available**, use the `run_polyspace_bug_finder`
 tool:
-- `file_paths` (required): comma-separated absolute paths to the C/C++ files.
+- `file_paths` (optional): comma-separated absolute paths to the C/C++ files. Omit it to
+  analyze the sources already listed in the options file; paths given here are added to that
+  list.
 - `results_dir` (required): absolute path to the output directory.
 - `options_file` (required): absolute path to the Polyspace options file.
 - `checkers_file_path` (optional): path to the checkers activation file.

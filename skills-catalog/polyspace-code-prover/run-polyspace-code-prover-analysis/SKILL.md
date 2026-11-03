@@ -43,7 +43,9 @@ affects which run path gives usable results:
 ### Using the MCP tool
 
 **If the Polyspace MCP Server is available**, use the `run_polyspace_code_prover` tool:
-- `file_paths` (required): comma-separated absolute paths to the C/C++ files.
+- `file_paths` (optional): comma-separated absolute paths to the C/C++ files. Omit it to
+  verify the sources already listed in the options file; paths given here are added to that
+  list.
 - `results_dir` (required): absolute path to the output directory.
 - `options_file` (required): absolute path to the Polyspace options file.
 - `verification_level` (optional): stop level, default 2. Higher levels prove more (fewer oranges) but cost far more time; values above 4 are unusual.

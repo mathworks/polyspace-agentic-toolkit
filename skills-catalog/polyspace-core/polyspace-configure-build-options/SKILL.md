@@ -17,10 +17,17 @@ Create a Polyspace build options file from either a build command (sniffing) or 
   - `build_options_file_path` (required): absolute path to the output file to create
   - `build_command` (required): the project build command to sniff
   - `extra_polyspace_configure_options_file_path` (optional): extra polyspace-configure options
+  - `include_project_sources` (optional)
 - To use a **compilation database**, use `configure_build_options_from_ccdb`:
   - `build_options_file_path` (required): absolute path to the output file to create
   - `ccdb_file_path` (required): absolute path to `compile_commands.json`
   - `extra_polyspace_configure_options_file_path` (optional): extra polyspace-configure options
+  - `include_project_sources` (optional)
+
+Both tools take `include_project_sources`. Set it to `true` to write the discovered source
+files into the generated options file — that is what lets a whole-project Bug Finder or Code
+Prover run omit `file_paths`. It defaults to `false`, which omits the source list so Polyspace
+as You Code can supply its own single file; leave it `false` for as-you-code.
 
 **macOS**: Build command sniffing (`build_command`) is not supported on macOS because System Integrity Protection (SIP) blocks `polyspace-configure` from tracing processes. Use `ccdb_file_path` with a `compile_commands.json` instead.
 

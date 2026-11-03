@@ -13,10 +13,15 @@ Create or modify the checkers XML file that defines which coding rules and defec
 
 **If the `configure_checkers_for_polyspace` tool is available**, use it:
 - `checkers_file_path` (required): absolute path to the XML file to create (must have `.xml` extension)
-- Standard parameters (set to `"all"` to enable): `misra_c_2012`, `misra_c_2023`, `misra_cpp_2023`, `cert_c`, `cert_cpp`, `cwe`, `polyspace_defects`
+- `standards`: an array of the standards to enable at the standard level. There is no
+  per-standard parameter and no `"all"` value — pass the identifiers themselves, chosen from
+  `bug_finder_findings`, `misra_c_2012`, `misra_c_2023`, `misra_c_2025`, `misra_cpp_2023`,
+  `cert_c`, `cert_cpp`, `cwe` (for example `["misra_c_2023", "cwe"]`)
 - `launch_checkers_selection_ui` (optional): set to `true` to open the interactive UI instead
 
-Standard parameters and `launch_checkers_selection_ui` are mutually exclusive.
+Exactly one of `standards` and `launch_checkers_selection_ui` must be given; they are mutually
+exclusive. Named subsets (MISRA mandatory/required/advisory, CERT levels, CWE top-25) cannot be
+selected through this tool — it switches whole standards on.
 
 ## Otherwise using the binary / writing the XML directly
 

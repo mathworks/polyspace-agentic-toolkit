@@ -59,7 +59,7 @@ The AI assistant reads **skills** (instructional markdown files) for domain know
 
 Polyspace R2026a recommended. Previous versions back to R2025a are supported.
 
-The Polyspace Agentic Toolkit is supported on Linux, macOS, and Windows operating systems.
+The Polyspace Agentic Toolkit is supported on Linux, macOS (Apple silicon only), and Windows operating systems.
 
 ## Quick Start
 
@@ -68,7 +68,7 @@ The Polyspace Agentic Toolkit is supported on Linux, macOS, and Windows operatin
 * Supported AI coding agent
 * Git&trade;
 
-The Polyspace Agentic Toolkit helps you install and configure the Polyspace MCP Core Server, or can be configured to use your existing installation.
+The Polyspace Agentic Toolkit helps you install and configure the Polyspace MCP Server, or can be configured to use your existing installation.
 
 ### Full Setup (recommended)
 
@@ -128,7 +128,7 @@ The Polyspace Agentic Toolkit provides the following tools:
 | `run_polyspace_as_you_code`, `run_polyspace_bug_finder`, `run_polyspace_code_prover` | Run Polyspace as You Code, Bug Finder, or Code Prover on C/C++ code to find defects, coding-standard violations, and run-time errors. |
 | `configure_build_options_from_ccdb`, `configure_build_options_from_build_command`, `configure_checkers_for_polyspace` | Generate build options from a compilation database (`compile_commands.json`) or a build command, and select which checkers run. |
 | `get_polyspace_documentation` | Look up Polyspace command-line options and documentation. |
-| `get_polyspace_results_list`, `get_polyspace_results_summary`, `get_polyspace_result_details`, `list_source_file_snapshots`, `search_source_file_snapshots`, `get_source_file_snapshot`, `get_symbol_navigation`, `get_macro_expansion`, `get_analysis_options`, `get_call_graph`, `get_variable_accesses` | Explore and inspect analysis results: list and summarize findings, drill into a finding, browse analyzed source, and navigate symbols, macros, call graphs, and variable accesses. |
+| `get_polyspace_results_list`, `get_polyspace_results_summary`, `get_polyspace_result_details`, `list_source_file_snapshots`, `search_source_file_snapshots`, `get_source_file_snapshot`, `get_symbol_navigation`, `get_macro_expansion`, `get_analysis_options`, `get_call_graph`, `get_variable_accesses`, `get_dead_code_blocks` | Explore and inspect analysis results: list and summarize findings, drill into a finding, browse analyzed source, navigate symbols, macros, call graphs, and variable accesses, and list dead code blocks. |
 | `get_code_prover_assumptions`, `get_concurrency_model`, `get_orange_sources`, `get_static_ranges` | Code Prover&ndash;specific inspection: proof assumptions, concurrency model, orange (unproven) sources, and computed value ranges. |
 | `add_review_information_to_result`, `transfer_polyspace_comments`, `query_justification_catalog`, `generate_report` | Triage and reporting: set review status and justifications, carry comments across runs, query the justification catalog, and generate reports. |
 
@@ -149,7 +149,7 @@ Skills are organized into groups. Automated setup installs only the groups you n
 | **`polyspace-code-prover`** | You have Polyspace Code Prover | Prove the absence of run-time errors |
 | **`polyspace-test`** | You have Polyspace Test | Author and run PSTUnit tests |
 
-Two invariants: **`polyspace-core` is always installed**, and **`polyspace-static-core` is installed as soon as any static-analysis product (as You Code, Bug Finder, or Code Prover) is present** — it holds the review/fix/justify workflow those products share. `polyspace-test` drives dynamic testing and does **not** require `polyspace-static-core`. Install only the groups for the products you actually have: agents trigger the right skill more reliably when fewer are loaded. In Claude Code the invariant is enforced for you — each product plugin declares `polyspace-static-core` as a dependency, so installing `polyspace-as-you-code`, `polyspace-bug-finder`, or `polyspace-code-prover` pulls it in automatically.
+Two invariants: **`polyspace-core` is always installed**, and **`polyspace-static-core` is installed as soon as any static-analysis product (as You Code, Bug Finder, or Code Prover) is present** — it holds the review/fix/justify workflow those products share. `polyspace-test` drives dynamic testing and does **not** require `polyspace-static-core`. Install only the groups for the products you actually have: agents trigger the right skill more reliably when fewer are loaded. When you install plugins by hand, install `polyspace-static-core` yourself alongside any static-analysis product plugin — it is not pulled in automatically.
 
 ### Polyspace Core
 
@@ -259,12 +259,12 @@ Customize the behavior of the server by providing arguments in the `args` array 
 
 | Argument | Description | Example |
 | ------------- | ------------- | ------------- |
-| polyspace-root | Root directory of the Polyspace installation. If not set, the server automatically detects the installation from the installer registry (`polyspace_products.prf`). | `"--polyspace-root=/usr/local/Polyspace/R2026a"` |
+| polyspace-root | Root directory of the Polyspace installation. If not set, the server uses the first Polyspace installation found on `PATH` (from the Polyspace binaries in `<polyspace_root>/polyspace/bin`). | `"--polyspace-root=/usr/local/Polyspace/R2026a"` |
 | log-folder | Directory where server log files are written. | `"--log-folder=/tmp/polyspace-logs"` |
 | log-level | Log verbosity level. Default: `info`. | `"--log-level=debug"` |
 | disable-telemetry | To disable anonymized data collection, set this argument to `true`. For details, see [Data Collection](#data-collection). | `"--disable-telemetry=true"` |
 
-Arguments can also be set via environment variables: `POLYSPACE_ROOT`.
+You can also set the Polyspace root by using the `MW_MCP_SERVER_POLYSPACE_ROOT` environment variable. `--polyspace-root` takes precedence over the environment variable, which takes precedence over `PATH`.
 
 ## Data Collection
 

@@ -21,17 +21,21 @@ Create a file with `.xml` extension using this template. Change `state="off"` to
 </polyspace_checkers_selection>
 ```
 
-**Standard name mapping** (tool parameter to XML name):
+**Standard name mapping** (value in the tool's `standards` array to XML name):
 
-| Parameter | XML `name` attribute |
-|-----------|---------------------|
+| `standards` value | XML `name` attribute |
+|-------------------|---------------------|
+| `bug_finder_findings` | `Bug Finder Findings` |
 | `misra_c_2012` | `MISRA C:2012` |
 | `misra_c_2023` | `MISRA C:2023` |
+| `misra_c_2025` | `MISRA C:2025` (requires R2026b or later) |
 | `misra_cpp_2023` | `MISRA C++:2023` |
 | `cert_c` | `SEI CERT C` |
 | `cert_cpp` | `SEI CERT C++` |
 | `cwe` | `CWE` |
-| `polyspace_defects` | `Bug Finder Findings` |
+
+The standards above are the ones the tool can switch on. Writing the XML by hand also lets you
+enable `MISRA C++:2008`, `ISO/IEC TS 17961` and `AUTOSAR C++14`, which the tool does not offer.
 
 ## Option B — Launch the interactive checkers selection UI
 

@@ -21,9 +21,24 @@ find_checker_doc = "RTE Check:COR"
 find_checker_doc = "CWE:119"
 ```
 
-The format is `FAMILY:ACRONYM` where the family and acronym match the values from Polyspace analysis results. This returns the exact documentation URL, fix guidance URL (when available), and description directly from the installed Polyspace catalog.
+The format is `FAMILY:ACRONYM`, where the family is one of the documentation catalog's families listed below and the acronym is the checker's short name. This returns the exact documentation URL, fix guidance URL (when available), and description directly from the installed Polyspace catalog.
 
 Accepted families: `Defect`, `RTE Check`, `Code Metric`, `Custom Rule`, `MISRA C:2012`, `MISRA C:2023`, `MISRA C:2025`, `MISRA C++:2008`, `MISRA C++:2023`, `SEI CERT C`, `SEI CERT C++`, `AUTOSAR C++14`, `ISO/IEC TS 17961`, `CWE`, `Guidelines`.
+
+The catalog's family names are not always the family a results database reports. A coding-rule
+finding carries its standard as its family, so those pass through unchanged. But Code Prover
+run-time checks are reported in results under the family `Run-time Check`, which the catalog
+does not accept — use `RTE Check` for them (`RTE Check:COR`, not `Run-time Check:COR`). If a
+finding's family is not in the list above, pick the catalog family that describes the checker
+rather than passing the results value through.
+
+The acronym needs the same trimming. A coding-rule check identifier in the results repeats the
+standard before the rule number, so pass only the rule number: `Rule-8.4` and `8.4` are both
+accepted, and a directive works as either `Dir-4.6` or the `D4.6` spelling the results use. Passing
+a whole check identifier, standard included, does not resolve — you get an unknown-family error, or
+a plain "not found in the catalog" answer. Read either as *the input was wrong*, not as *this
+checker is undocumented*: re-map the family, trim the rule number, and retry once before telling the
+user no documentation exists.
 
 This is the fastest, most reliable path — it requires no URL pattern guessing or web search.
 

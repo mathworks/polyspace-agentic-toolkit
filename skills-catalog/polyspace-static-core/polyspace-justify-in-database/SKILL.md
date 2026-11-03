@@ -20,12 +20,17 @@ Record a **review status and rationale directly in the Polyspace results databas
 - Deciding *whether* a Bug Finder / as-you-code finding is a real defect or acceptable — review it first with `polyspace-review-findings`.
 - Deciding *whether* a Code Prover check is acceptable — review it first with `review-polyspace-code-prover-results` (and `triage-orange-checks` for orange checks specifically).
 - Fixing a real error in code — use `polyspace-fix-findings`.
+- Justifying a Polyspace as You Code finding: that analysis produces no results database, and on an
+  as-you-code-only installation the three tools this skill uses are not registered at all — they
+  ship with Bug Finder or Code Prover. Use `polyspace-justify-in-code` there.
 
 ## Workflow
 
 ### Using the MCP tools
 
-1. **Get the `result_id`** — from `get_polyspace_results_list` on the results file.
+1. **Get the `result_id`** — from `get_polyspace_results_list` on the results file. Each entry of
+   its `results` array carries the finding's number in a field named `id` (plus `family`, `check`,
+   `file`, `line`, `status`); that `id` is the value to pass as `result_id` below.
 2. **Set the status** — `add_review_information_to_result`:
    - `results_file`: the `.psbf` or `.pscp` path.
    - `result_id`: the finding to update.
@@ -36,7 +41,7 @@ Record a **review status and rationale directly in the Polyspace results databas
 
 ### Code Prover: unreachable defensive code (gray `UNR`)
 
-Justify an intentionally-unreachable gray check with `status: Justified` and a comment citing the evidence (e.g. the defensive guard is required by the coding standard), referencing the exact checker id (`UNR`, family `RTE Check`). If the gray is *unintended* dead code, it is not a justification case — remove or refactor it (route to `polyspace-fix-findings`).
+Justify an intentionally-unreachable gray check with `status: Justified` and a comment citing the evidence (e.g. the defensive guard is required by the coding standard), referencing the exact checker id (`UNR`, which the results database reports under the family `Run-time Check`; the documentation catalog spells that same family `RTE Check`). If the gray is *unintended* dead code, it is not a justification case — remove or refactor it (route to `polyspace-fix-findings`).
 
 ### Without the MCP server
 

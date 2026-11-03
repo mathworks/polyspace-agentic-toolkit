@@ -60,12 +60,24 @@ than explaining the symptom (see the workflow below).
 **If the Polyspace MCP Server is available**, all tools take `results_file` (the
 `.psbf` / `.payc` path from the run skill).
 
-1. **Summary** — `get_polyspace_results_summary`: counts by family and by impact.
-   Establish the shape of the run (how many defects vs coding-standard violations,
-   how many High-impact) before drilling in.
+**On an as-you-code-only install these tools are absent.** Every tool named below
+belongs to the Bug Finder / Code Prover toolsets, so an install with neither
+product registers none of them — the server starts and serves its generic tools,
+but no tool named here exists to call. That is a property of the install, not a
+failure: fall back to the CLI section below, which does read a `.payc` file. Note
+what the fallback cannot give you: the exported SARIF carries no event trace, so
+the source→sink path in step 3 and the tracing in step 4 are unavailable from it.
+
+1. **Summary** — `get_polyspace_results_summary`: the total (`results_count`), the
+   list of family *names* present (`families` — names only, no counts), and the
+   analysis metrics (`analysis.num_files`, `analysis.num_lines`). It carries no
+   per-family and no per-impact counts: for those, call
+   `get_polyspace_results_list` filtered by `family`/`impact` and count its
+   `results` entries. Establish the shape of the run before drilling in.
 2. **List** — `get_polyspace_results_list`. Filter by `family`/`rule_id`,
    `impact`, or `status`. Lead with **High-impact defects**, then Medium, then
-   coding-standard violations. Each result carries a `result_id`.
+   coding-standard violations. Each entry carries its finding number in `id` —
+   pass that value as the `result_id` argument of the tools below.
 3. **Explain one finding** — `get_polyspace_result_details` with the `result_id`:
    the message, location, and the event/flow trace (for a dataflow defect, the
    source→sink path). When the cause is not on the finding's own line, continue to
@@ -80,14 +92,20 @@ than explaining the symptom (see the workflow below).
    - `get_symbol_navigation` to jump to a definition/declaration.
    - `get_macro_expansion` if the finding sits on a macro — it shows the code
      actually analyzed.
-5. **Concurrency defects** — `get_concurrency_model` first (loads the task/thread
-   model), then `get_variable_accesses` for the racing accesses. Detection depends
-   on the concurrency model being configured or detected; if none is modeled, no
-   concurrency findings are produced.
+5. **Concurrency defects** — `get_variable_accesses` for the racing accesses, plus the
+   defect's own `get_polyspace_result_details` for the tasks it names. There is no
+   concurrency-model tool on this path: `get_concurrency_model` is Code Prover only, so
+   it rejects a `.psbf`/`.payc` file and is not even registered on a Bug Finder install.
+   Detection depends on the concurrency model being configured or detected; if none is
+   modeled, no concurrency findings are produced.
 
 ### Otherwise using the binary directly
 
-**If the MCP server is NOT available**, read `references/cli-usage.md` in this folder.
+**If the tools above are not available to you** — either no Polyspace MCP Server at
+all, or an as-you-code-only install where the server runs but registers none of them
+(see the note above) — read `references/cli-usage.md` in this folder. Do not gate this
+on the server being absent: in the as-you-code-only case the server is present and
+answering, and the tools are still missing.
 
 ## Prioritization
 
@@ -109,8 +127,9 @@ Report findings in this order, and route the follow-up work:
 - False positives are recorded with a reason, not silenced by contorting the code.
 
 ## Conventions
-- Always establish the summary (counts by impact/family) before reporting
-  individual findings.
+- Always establish the summary (total, families present, size of the run) before
+  reporting individual findings; get impact/family *counts* from
+  `get_polyspace_results_list`.
 - For a defect whose cause is elsewhere, trace it (call graph / variable
   accesses) before explaining it — the fix belongs at the root, not the symptom.
 - Never present a Bug Finder finding as a proof of a bug or its absence; it is a

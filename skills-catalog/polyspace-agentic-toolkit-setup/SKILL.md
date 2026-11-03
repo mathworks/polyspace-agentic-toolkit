@@ -3,7 +3,7 @@ name: polyspace-agentic-toolkit-setup
 description: Sets up the Polyspace Agentic Toolkit for any supported AI agent. Use when the user asks to "set up Polyspace", "set up the Polyspace Agentic Toolkit", "install the Polyspace MCP Server", "configure Polyspace for my agent", or wants to get Polyspace working with their AI application.
 license: MathWorks BSD-3-Clause
 metadata:
-  version: "1.3"
+  version: "1.3.1"
 ---
 # Polyspace Agentic Toolkit — Setup Skill
 
@@ -39,22 +39,22 @@ Intel Mac (`uname -m` = x86_64 on Darwin) is not supported — no Intel Mac bina
 
 ### 1b. Determine the Polyspace installation root
 
-The setup must resolve an explicit Polyspace root and pin it via `--polyspace-root` (step 3b). Do NOT rely on the MCP server's runtime auto-discovery — it is unreliable and must not be used as the resolution strategy.
+The setup must resolve an explicit Polyspace root and pin it via `--polyspace-root` (step 3b). Without it, the MCP server uses the first Polyspace installation found on `PATH` at each start, so the root it uses can change when `PATH` changes. Pinning the root makes the configuration independent of `PATH`.
 
-Look for `polyspace-as-you-code` (or `polyspace-bug-finder-access` for older versions) in PATH. If found, note the Polyspace root — the binary is at `<root>/polyspace/bin/<binary>`, so strip two parent directories.
+Look up the Polyspace product launchers listed in step 1h on `PATH` (resolve symlinks). A launcher is at `<root>/polyspace/bin/<launcher>`, so the root is three levels above the launcher file. Skip roots on a network path (UNC share, `\\server\share`): the MCP server requires a local installation. If launchers resolve to several roots, use the one that comes first on `PATH` and report the others in the plan. Do not look for `matlab` on `PATH` — only Polyspace launchers identify a Polyspace root.
 
 If not in PATH, check the installer registry file `polyspace_products.prf` at the platform-specific default location.
 
 If neither resolves the root, mark it **not found** — Phase 2 will ask the user for the installation path before proceeding.
 
-**Validate the Polyspace version.** Read `VersionInfo.xml` from the Polyspace root (`<root>/polyspace/VersionInfo.xml` or `<root>/VersionInfo.xml`) and extract the release string. Polyspace must be **R2024b or later**. If the version is older, report it in the plan and warn that it is unsupported.
+**Validate the Polyspace version.** Read `VersionInfo.xml` from the Polyspace root (`<root>/polyspace/VersionInfo.xml` or `<root>/VersionInfo.xml`) and extract the release string. Polyspace must be **R2024b or later**; Bug Finder, Code Prover, and Polyspace Test need **R2025a or later**. If the version is older, report it in the plan and warn that it is unsupported.
 
 ### 1c. Check latest MCP server version
 
 Query GitHub for the latest release:
 
 ```bash
-curl -sL https://api.github.com/repos/polyspace/polyspace-agentic-toolkit/releases/latest | grep '"tag_name"' | head -1 | sed 's/.*"\(v[^"]*\)".*/\1/'
+curl -sL https://api.github.com/repos/mathworks/polyspace-agentic-toolkit/releases/latest | grep '"tag_name"' | head -1 | sed 's/.*"\(v[^"]*\)".*/\1/'
 ```
 
 Record the latest tag (e.g., `v1.0.0`).
@@ -197,7 +197,7 @@ Read the appropriate per-agent setup guidance file from `references/` in this fo
 
 Follow the steps in the reference file to register the MCP server and configure skills for the detected agent.
 
-When configuring the MCP server command, always include the `--polyspace-root=<POLYSPACE_ROOT>` argument, using the root resolved in Phase 1b / Phase 2. This pins the Polyspace installation explicitly instead of relying on the server's runtime auto-discovery. (Only omit it in the edge case where the user confirmed Polyspace is not yet installed — in which case the tools will not work until setup is re-run with a resolved root.)
+When configuring the MCP server command, always include the `--polyspace-root=<POLYSPACE_ROOT>` argument, using the root resolved in Phase 1b / Phase 2. This pins the Polyspace installation explicitly instead of depending on `PATH`. (Only omit it in the edge case where the user confirmed Polyspace is not yet installed — in which case the server uses the first Polyspace installation found on `PATH`, and the tools will not work until one is found there or setup is re-run with a resolved root.)
 
 **Skip this step if the existing agent configuration is already up to date** (as determined in step 1g). Only add or update the `polyspace` MCP entry — never overwrite entries for other MCP servers.
 
@@ -254,8 +254,16 @@ Confirm the setup works:
 
 1. Check that the MCP server binary exists and is executable at the install path.
 2. If Polyspace is installed, run a quick connectivity test:
-   - Use the `configure_checkers_for_polyspace` tool to enable MISRA C:2012 checkers on a temporary file.
-   - If the tool succeeds and returns a checker configuration, the MCP server is connected and Polyspace is found.
+   - Use the `get_polyspace_documentation` tool with `find_option_doc` set to an option name
+     such as `-target`. This tool is available on every Polyspace product installation and
+     only reads, so it is a safe probe.
+   - If the tool returns a documentation page, the MCP server is connected and Polyspace is
+     found. If it is not among the registered tools at all, the MCP registration did not take
+     effect; if it errors on the Polyspace root, `--polyspace-root` is wrong.
+   - Do not probe with `configure_checkers_for_polyspace` or a `run_polyspace_*` tool: those
+     are registered only for the products found at startup (checkers configuration needs Bug
+     Finder or as-you-code), so their absence on, say, a Code Prover-only install is not a
+     connectivity failure.
 3. If Polyspace is not installed, skip the connectivity test and note that the user must install Polyspace before using the tools.
 
 ## Phase 5: Report

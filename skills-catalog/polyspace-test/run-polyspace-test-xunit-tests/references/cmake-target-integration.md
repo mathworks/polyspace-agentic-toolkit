@@ -2,7 +2,19 @@
 
 When the project uses CMake for a target (embedded) build, create a **separate** `pstest_build/CMakeLists.txt` rather than modifying the user's existing `CMakeLists.txt`. This file cross-compiles the test firmware, flashes it, and monitors the test run over the chosen transport.
 
-After completing the run, tell the user what was created and how to reproduce (e.g., "I created `pstest_build/` — you can re-run with `cd pstest_build/build && make && make run`").
+After completing the run, tell the user what was created and how to reproduce (e.g., "I created `pstest_build/` — you can re-run with `cd pstest_build/build && ninja && ninja run`").
+
+## Generator
+
+Prefer **Ninja** as the CMake generator (`-G Ninja`). Polyspace bundles Ninja — pass it via `CMAKE_MAKE_PROGRAM` so CMake does not need Ninja on `PATH`:
+
+| Platform | Path |
+|----------|------|
+| Windows  | `$ENV{POLYSPACE_ROOT}/toolbox/shared/coder/ninja/win64/ninja.exe` |
+| Linux    | `$ENV{POLYSPACE_ROOT}/toolbox/shared/coder/ninja/glnxa64/ninja` |
+| macOS    | `$ENV{POLYSPACE_ROOT}/toolbox/shared/coder/ninja/maca64/ninja` |
+
+If Ninja fails to configure, fall back to the platform default generator (omit `-G` and `-DCMAKE_MAKE_PROGRAM`). The platform default uses MinGW Makefiles on Windows and Unix Makefiles on Linux/macOS.
 
 ## Creating pstest_config.h
 
@@ -182,10 +194,13 @@ Build and run:
 ```sh
 cd pstest_build
 mkdir build && cd build
-cmake -G "Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake ..
-make
-make run
-make report
+cmake -G Ninja \
+  -DCMAKE_MAKE_PROGRAM=$POLYSPACE_ROOT/toolbox/shared/coder/ninja/<platform>/ninja \
+  -DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake \
+  ..
+ninja
+ninja run
+ninja report
 ```
 
 ## Tests + Profiling
@@ -291,6 +306,10 @@ The `pstest` package provides:
 - `pstest_add_profiling_runtime()` — create a custom runtime library (for cross-compilation)
 - `pstest_add_convert_target()` — convert raw results to `.pstestr`/`.psprof`
 - `pstest_add_report_target()` — generate HTML/XML reports from results
+
+## Troubleshooting
+
+- **Profiling stalls.** If the profiling step appears to hang or stall, the agent sandbox may be blocking it. Ask the user whether they want to run the command outside the sandbox.
 
 ---
 

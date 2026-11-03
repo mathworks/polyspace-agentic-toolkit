@@ -40,14 +40,27 @@ code_on_finding_lines;
 
 ## FAMILY:ACRONYM format
 
-Both `FAMILY` and `ACRONYM` must match the exact values from the analysis results. Examples:
-- `Defect:INT_ZERO_DIV` — Bug Finder defect
-- `MISRA-C3:8.4` — MISRA C 2012 rule (family `MISRA-C3`)
-- `MISRA-C-2023:8.4` — MISRA C 2023 rule (family `MISRA-C-2023`)
+`FAMILY` is the **annotation** family name, which for coding standards is *not* the family
+string the results carry: a rule the results report under family `MISRA C:2023` is annotated
+as `MISRA-C-2023`, and a MISRA C 2012 rule is annotated as `MISRA-C3`. Take the acronym / rule
+number from the results, but take the family from this list:
+
+- `Defect:INT_ZERO_DIV` — Bug Finder defect (family `Defect`, same as in the results)
+- `MISRA-C3:8.4` — MISRA C 2012 rule
+- `MISRA-C-2023:8.4` — MISRA C 2023 rule (the results spell this family `MISRA C:2023`)
 - `CERT-C:DCL00-C` — CERT C rule
 - `CWE:119` — CWE weakness
 
-Do not guess family names — for example, MISRA C 2012 uses family `MISRA-C3` and MISRA C 2023 uses family `MISRA-C-2023`.
+The acronym also needs stripping. For a coding-rule finding the results repeat the standard inside
+the check identifier itself — the check reads as the standard followed by the rule number, e.g. a
+2012 rule 8.4 is reported as `MISRA C:2012 8.4` and a directive as `MISRA C:2012 D4.6`. Only the
+last part, the rule number, belongs after the colon: `MISRA-C3:8.4`, never
+`MISRA-C3:MISRA C:2012 8.4`. Bug Finder defect acronyms carry no such prefix and are used as-is.
+
+Do not guess a family name and do not copy the results family verbatim for a coding standard.
+If the standard you need is not listed above, look the annotation family up in the Polyspace
+annotation documentation (invoke `polyspace-find-option-documentation` for the annotation page)
+rather than inventing one.
 
 ## Status values
 

@@ -4,11 +4,19 @@ schema_version: 1
 display-name: "Polyspace Agentic Toolkit"
 description: "AI skills and MCP tools for Polyspace static analysis and unit testing of C/C++ code"
 
-# The Polyspace MCP Server binary ships as a release asset of this repository
-# (see README.md — the setup skill downloads it from the latest GitHub release).
-dependencies:
-  - repo: https://github.com/mathworks/polyspace-agentic-toolkit
-    default-version: latest
+# The binary ships as a release asset of this repository. <repo> and <version>
+# are interpolated by the installer so an enterprise mirror can override both.
+mcp-servers:
+  - name: polyspace
+    display-name: "Polyspace MCP Server"
+    binary:
+      linux_x64: <repo>/releases/download/<version>/polyspace-mcp-server-glnxa64
+      macos_arm64: <repo>/releases/download/<version>/polyspace-mcp-server-maca64
+      # Polyspace does not support Intel macOS, so no binary is published for it.
+      # The installer fails when a platform has no entry, so point to the arm64
+      # binary: the installer succeeds, but the Polyspace MCP server does not run.
+      macos_x64: <repo>/releases/download/<version>/polyspace-mcp-server-maca64
+      windows_x64: <repo>/releases/download/<version>/polyspace-mcp-server-win64.exe
 
 skill-groups:
   - name: polyspace-core
@@ -19,8 +27,9 @@ skill-groups:
 
   - name: polyspace-static-core
     display-name: "Polyspace Static Core"
-    description: "Shared static-analysis skills: review, fix, and justify findings (in code or in the results database), configure checkers, and find checker/option documentation. Install alongside any Polyspace static-analysis product (as You Code, Bug Finder, Code Prover)"
+    description: "Shared static-analysis skills: review, fix, and justify findings (in code or in the results database), configure checkers, and find checker/option documentation. Used by Polyspace as You Code, Bug Finder, and Code Prover"
     path: skills-catalog/polyspace-static-core
+    required: true
 
   - name: polyspace-as-you-code
     display-name: "Polyspace as You Code"

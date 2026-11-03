@@ -2,7 +2,21 @@
 
 When the project uses CMake, create a **separate** `CMakeLists.txt` in a subdirectory (e.g., `pstest_build/CMakeLists.txt`) rather than modifying the user's existing `CMakeLists.txt`. This file re-declares the source targets and adds test/profiling targets.
 
-After completing the run, tell the user what was created and how to reproduce independently (e.g., "I created `pstest_build/CMakeLists.txt` — you can re-run with `cd pstest_build/build && make test && make convert && make report`").
+After completing the run, tell the user what was created and how to reproduce independently (e.g., "I created `pstest_build/CMakeLists.txt` — you can re-run with `cd pstest_build/build && ninja test && ninja convert && ninja report`").
+
+## Generator
+
+Prefer **Ninja** as the CMake generator (`-G Ninja`). Polyspace bundles Ninja — pass it via `CMAKE_MAKE_PROGRAM` so CMake does not need Ninja on `PATH`:
+
+| Platform | Path |
+|----------|------|
+| Windows  | `$ENV{POLYSPACE_ROOT}/toolbox/shared/coder/ninja/win64/ninja.exe` |
+| Linux    | `$ENV{POLYSPACE_ROOT}/toolbox/shared/coder/ninja/glnxa64/ninja` |
+| macOS    | `$ENV{POLYSPACE_ROOT}/toolbox/shared/coder/ninja/maca64/ninja` |
+
+Ninja is compiler-agnostic, so also pass `-DCMAKE_C_COMPILER=<compiler>` using the compiler determined in the Determine Configuration step.
+
+If Ninja fails to configure, fall back to the platform default generator (omit `-G` and `-DCMAKE_MAKE_PROGRAM`). The platform default uses MinGW Makefiles on Windows and Unix Makefiles on Linux/macOS.
 
 ## Tests Only
 
@@ -45,9 +59,14 @@ Build and run:
 ```sh
 cd pstest_build
 mkdir build && cd build
-cmake -G "Unix Makefiles" ..
-make run_all
+cmake -G Ninja \
+  -DCMAKE_MAKE_PROGRAM=$POLYSPACE_ROOT/toolbox/shared/coder/ninja/<platform>/ninja \
+  -DCMAKE_C_COMPILER=<compiler> \
+  ..
+ninja run_all
 ```
+
+Do not create multiple build directories. On configure failure, delete `CMakeCache.txt` and retry in the same directory.
 
 ## Tests + Profiling
 
@@ -92,6 +111,7 @@ add_executable(testrunner ../test/test_foo.c ../test/test_bar.c ../test/main.c)
 target_link_libraries(testrunner pstest::pstest_c app)
 
 # Run tests with profiling output
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/out)
 set(CMAKE_CTEST_ARGUMENTS "-O;out/pstest_results.mrf;--verbose")
 add_test(NAME testrunner COMMAND testrunner -format mrf)
 set_tests_properties(testrunner PROPERTIES ENVIRONMENT PSPROFILE_RESULTS_FILE=out/pstest_coverage.bin)
@@ -124,6 +144,10 @@ The `pstest` package provides:
 - `pstest_add_profiling_runtime()` — create a custom runtime library (for cross-compilation)
 - `pstest_add_convert_target()` — convert raw results to `.pstestr`/`.psprof`
 - `pstest_add_report_target()` — generate HTML/XML reports from results
+
+## Troubleshooting
+
+- **Profiling stalls.** If the profiling step appears to hang or stall, the agent sandbox may be blocking it. Ask the user whether they want to run the command outside the sandbox.
 
 ---
 

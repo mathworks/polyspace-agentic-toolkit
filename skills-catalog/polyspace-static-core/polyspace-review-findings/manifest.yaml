@@ -11,7 +11,8 @@ requires-tools:
   - get_variable_accesses
   - get_symbol_navigation
   - get_macro_expansion
-  - get_concurrency_model
+# NOT get_concurrency_model: it is Code Prover only, so it rejects this skill's
+# .psbf/.payc files and is not registered on a Bug Finder install at all.
 requires-skills:
   - polyspace-find-checker-documentation
   - polyspace-fix-findings

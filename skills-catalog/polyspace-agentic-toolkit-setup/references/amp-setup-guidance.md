@@ -28,7 +28,7 @@ Read the existing config if it exists. Add or update two settings, preserving al
 }
 ```
 
-Omit `--polyspace-root` from `args` if no Polyspace installation was found.
+Omit `--polyspace-root` from `args` if no Polyspace installation was found. Without it, the server uses the first Polyspace installation found on `PATH` (through the Polyspace binaries in `<polyspace_root>/polyspace/bin`); if none is found, the MCP tools will not work until the user adds `<polyspace_root>/polyspace/bin` to `PATH` or configures `--polyspace-root` (or the `MW_MCP_SERVER_POLYSPACE_ROOT` environment variable).
 
 2. Skills — install only the confirmed groups, then point Amp at them.
 

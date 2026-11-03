@@ -49,7 +49,31 @@ If compilation fails, check `<output_dir>/polyspace_err.log` for compiler error 
 
 ## After analysis
 
-If the user wants to **understand or prioritize** what was found (not fix it yet) — "what did it find", "which are serious", "explain this one" — hand off to the `polyspace-review-findings` skill (shared with Bug Finder), which reads the results database and ranks defects and coding-standard violations.
+The findings are in the tool's own response — it returns `total_findings` and `findings`. Each
+finding carries `id`, `family`, `check`, `function` and `line`; `message`, `category` and
+`information` appear when the analysis supplies them. `information` is the field that carries the
+prioritization axis, as one string — `Impact: <level>` for a defect, `Category: <rule category>` for
+a coding-rule violation — so read it before ranking anything. `status` and `severity` are present on
+every finding but hold placeholders until you point the run at a baseline, and `baseline_state` and
+`comment` appear only with one, so treat all four as review metadata rather than as findings data.
+
+**A coding-rule violation often has no `message`.** Defects always carry one; rule violations
+frequently do not, and for those the rule's text is in the top-level `rule_descriptions` map — look
+the finding's `check` value up in it. Report the rule from there rather than reporting the violation
+by number alone, and never conclude a finding is undescribed because its `message` is empty.
+
+A per-finding `file` is absent in practice: identify the source from the `source_file_path` you
+passed, or from the top-level `source_files` list. `rule_descriptions` and `source_files` are present
+only when the export carries them. The response does **not** contain a results-database path, so
+there is nothing for a results-database tool to open.
+
+If the user wants to **understand or prioritize** what was found (not fix it yet) — "what did it
+find", "which are serious", "explain this one" — use the `polyspace-review-findings` skill (shared
+with Bug Finder) for its prioritization guidance, but apply it to the fields above rather than
+re-reading a database: on an as-you-code-only installation the results-database tools that skill
+calls are not available at all (they are registered only with Bug Finder or Code Prover). Only when
+the user also has a `.psbf` or `.pscp` from a Bug Finder or Code Prover run should that skill's tool
+calls be used, against that file.
 
 If the user asked to fix findings or make the code compliant (not just run analysis), and findings are reported:
 
